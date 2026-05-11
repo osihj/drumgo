@@ -14,6 +14,7 @@
             --pogo-dark: #2C3E50;
             --pogo-white: rgba(255, 255, 255, 0.9);
             --pogo-yellow: #FFCE00;
+            --pogo-orange: #FF9800;
         }
 
         body {
@@ -40,35 +41,11 @@
             border-bottom: 10px solid rgba(0, 0, 0, 0.08);
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 35px;
-        }
+        header h2 { font-weight: 600; font-size: 1.7rem; margin: 0; }
+        header .line { width: 40px; height: 1px; background: #B8977E; margin: 15px auto; }
+        header p { font-size: 0.95rem; color: #7F8C8D; margin: 0 0 35px 0; }
 
-        header h2 {
-            font-weight: 600;
-            font-size: 1.7rem;
-            margin: 0;
-            color: var(--pogo-dark);
-        }
-
-        header .line {
-            width: 40px;
-            height: 1px;
-            background: #B8977E;
-            margin: 15px auto;
-        }
-
-        header p {
-            font-size: 0.95rem;
-            color: #7F8C8D;
-            margin: 0;
-        }
-
-        .section {
-            margin-bottom: 30px;
-            text-align: left;
-        }
+        .section { text-align: left; margin-bottom: 30px; }
 
         .check-item {
             display: flex;
@@ -77,14 +54,11 @@
             margin-bottom: 15px;
             padding: 18px 20px;
             border-radius: 25px;
-            font-size: 1.15rem;
-            line-height: 1.6;
+            font-size: 1.1rem;
+            line-height: 1.5;
             cursor: pointer;
-            transition: 0.2s;
             box-shadow: 0 4px 0px rgba(0,0,0,0.05);
         }
-
-        .check-item:active { transform: scale(0.97); }
 
         input[type="checkbox"] {
             appearance: none;
@@ -92,133 +66,60 @@
             height: 22px;
             border: 2px solid #BBB;
             border-radius: 50%;
-            margin-right: 15px;
-            margin-top: 6px;
-            position: relative;
+            margin-right: 12px;
+            margin-top: 2px;
             flex-shrink: 0;
-            background: white;
+            position: relative;
         }
 
-        input[type="checkbox"]:checked {
-            background: var(--pogo-green);
-            border-color: var(--pogo-green);
-        }
-
+        input[type="checkbox"]:checked { background: var(--pogo-green); border-color: var(--pogo-green); }
         input[type="checkbox"]:checked::after {
-            content: "✓";
-            color: white;
-            font-size: 14px;
-            position: absolute;
-            left: 4px;
-            top: 0px;
+            content: "✓"; color: white; font-size: 14px; position: absolute; left: 4px; top: -1px;
         }
 
-        .star-box {
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 30px;
-            padding: 20px;
-            margin-bottom: 25px;
-        }
-
-        .status-label {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #B8977E;
-            margin-bottom: 10px;
-            display: block;
-            text-align: center;
-        }
-
-        .star-rating {
-            display: flex;
-            flex-direction: row-reverse;
-            justify-content: center;
-            gap: 12px;
-        }
-
+        .star-box { background: rgba(255, 255, 255, 0.5); border-radius: 30px; padding: 20px; margin-bottom: 25px; }
+        .status-label { font-size: 1rem; font-weight: 600; color: #B8977E; display: block; margin-bottom: 10px; }
+        
+        .star-rating { display: flex; flex-direction: row-reverse; justify-content: center; gap: 10px; }
         .star-rating input { display: none; }
-        .star-rating label {
-            font-size: 36px;
-            color: #E8E8E8;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .star-rating input:checked ~ label,
-        .star-rating label:hover,
-        .star-rating label:hover ~ label {
-            color: var(--pogo-yellow);
-        }
+        .star-rating label { font-size: 32px; color: #E8E8E8; cursor: pointer; }
+        .star-rating input:checked ~ label { color: var(--pogo-yellow); }
 
         .btn {
             background-color: var(--pogo-red);
             color: white;
             border: none;
             padding: 20px;
-            width: 90%;
+            width: 100%;
             border-radius: 100px;
             font-size: 1.25rem;
             font-weight: 700;
             cursor: pointer;
             box-shadow: 0 6px 0px var(--pogo-red-dark);
-            transition: 0.1s;
             letter-spacing: 0.2em;
-            margin: 0 auto;
-            display: block;
         }
 
-        .btn:active {
-            box-shadow: 0 2px 0px var(--pogo-red-dark);
-            transform: translateY(4px);
-        }
+        .btn:active { transform: translateY(4px); box-shadow: 0 2px 0px var(--pogo-red-dark); }
 
         #result-area {
-            margin-top: 40px;
+            margin-top: 35px;
             padding: 30px 20px;
             border-radius: 35px;
             background: white;
             display: none;
-            text-align: center;
-            animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            animation: pop 0.4s ease-out;
         }
 
-        @keyframes pop {
-            0% { transform: scale(0.6); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
+        @keyframes pop { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
-        .score-label { 
-            font-size: 0.95rem; 
-            color: #7F8C8D; 
-            margin-bottom: 8px; 
-            font-weight: bold;
-            display: block;
-        }
+        .score-label { font-size: 0.9rem; color: #7F8C8D; display: block; margin-bottom: 5px; }
+        .score-display { font-size: 3.5rem; font-weight: 800; color: var(--pogo-red); display: block; margin-bottom: 20px; }
 
-        .score-display { 
-            font-size: 4rem; 
-            font-weight: 800; 
-            color: var(--pogo-red); 
-            margin-bottom: 15px;
-            display: block;
-        }
+        .feedback-title { display: block; font-size: 1.35rem; font-weight: 800; margin-bottom: 12px; }
+        .feedback-desc { display: block; font-size: 1.05rem; line-height: 1.8; color: #5D6D7E; }
 
-        .feedback-title {
-            display: block;
-            font-size: 1.3rem;
-            font-weight: 800;
-            margin-bottom: 12px;
-            color: var(--pogo-dark);
-        }
-
-        .feedback-desc {
-            display: block;
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #5D6D7E;
-            padding: 0 10px;
-        }
+        /* 特殊樣式：嚴重範圍 */
+        .urgent-alert { color: var(--pogo-red); }
     </style>
 </head>
 <body>
@@ -262,10 +163,8 @@
     function showAnalysis() {
         const checks = document.querySelectorAll('.task:checked').length;
         const checkScore = checks * 12;
-
         const starRating = document.querySelector('input[name="rating"]:checked')?.value || 0;
         const starScore = starRating * 8;
-
         const finalScore = checkScore + starScore;
 
         const resultArea = document.getElementById('result-area');
@@ -277,6 +176,7 @@
 
         let title = "";
         let desc = "";
+        let isUrgent = false;
 
         if (finalScore === 100) {
             title = "巔峰狀態！";
@@ -287,12 +187,19 @@
         } else if (finalScore >= 50) {
             title = "穩定進步。";
             desc = "心境尚在調和。請先透過幾次深呼吸，找回身體與節奏的連結。";
+        } else if (finalScore >= 24) {
+            title = "警告：雜訊過多。";
+            desc = "目前的狀態較為浮躁。建議先放慢練習速度，將注意力收回到呼吸上。";
         } else {
-            title = "需要調適。";
-            desc = "今日雜訊較多。建議先放慢速度，專注於呼吸，重新校準自己的心境。";
+            isUrgent = true;
+            title = "急需調整！";
+            desc = "當前狀態極不穩定。強行練習恐影響表現，請立即靜心五分鐘，排除雜念後再開始。";
         }
 
-        feedbackContent.innerHTML = `<span class="feedback-title">${title}</span><span class="feedback-desc">${desc}</span>`;
+        feedbackContent.innerHTML = `
+            <span class="feedback-title ${isUrgent ? 'urgent-alert' : ''}">${title}</span>
+            <span class="feedback-desc">${desc}</span>
+        `;
         
         setTimeout(() => {
             resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
