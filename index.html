@@ -12,9 +12,9 @@
             --pogo-red: #FF3847;
             --pogo-red-dark: #C62828;
             --pogo-dark: #2C3E50;
-            --pogo-white: rgba(255, 255, 255, 0.9);
+            --pogo-white: rgba(255, 255, 255, 0.95);
             --pogo-yellow: #FFCE00;
-            --pogo-orange: #FF9800;
+            --pogo-gray: #607D8B;
         }
 
         body {
@@ -33,12 +33,13 @@
         .pogo-container {
             background: var(--pogo-white);
             border-radius: 40px;
-            padding: 45px 25px;
+            padding: 40px 20px;
             max-width: 460px;
             width: 100%;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             text-align: center;
             border-bottom: 10px solid rgba(0, 0, 0, 0.08);
+            box-sizing: border-box;
         }
 
         header h2 { font-weight: 600; font-size: 1.7rem; margin: 0; }
@@ -51,19 +52,18 @@
             display: flex;
             align-items: flex-start;
             background: white;
-            margin-bottom: 15px;
-            padding: 18px 20px;
+            margin-bottom: 12px;
+            padding: 16px 18px;
             border-radius: 25px;
-            font-size: 1.1rem;
-            line-height: 1.5;
+            font-size: 1.05rem;
+            line-height: 1.4;
             cursor: pointer;
             box-shadow: 0 4px 0px rgba(0,0,0,0.05);
         }
 
         input[type="checkbox"] {
             appearance: none;
-            width: 22px;
-            height: 22px;
+            width: 20px; height: 20px;
             border: 2px solid #BBB;
             border-radius: 50%;
             margin-right: 12px;
@@ -74,7 +74,7 @@
 
         input[type="checkbox"]:checked { background: var(--pogo-green); border-color: var(--pogo-green); }
         input[type="checkbox"]:checked::after {
-            content: "✓"; color: white; font-size: 14px; position: absolute; left: 4px; top: -1px;
+            content: "✓"; color: white; font-size: 12px; position: absolute; left: 4px; top: 0px;
         }
 
         .star-box { background: rgba(255, 255, 255, 0.5); border-radius: 30px; padding: 20px; margin-bottom: 25px; }
@@ -89,77 +89,164 @@
             background-color: var(--pogo-red);
             color: white;
             border: none;
-            padding: 20px;
+            padding: 18px;
             width: 100%;
             border-radius: 100px;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 700;
             cursor: pointer;
             box-shadow: 0 6px 0px var(--pogo-red-dark);
             letter-spacing: 0.2em;
+            transition: transform 0.1s;
         }
 
         .btn:active { transform: translateY(4px); box-shadow: 0 2px 0px var(--pogo-red-dark); }
 
-        #result-area {
-            margin-top: 35px;
-            padding: 30px 20px;
+        .btn-wisdom {
+            background: linear-gradient(90deg, #42F5E6, #2EB9E6);
+            margin-top: 25px;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 0px #2598bd;
+            display: none;
+        }
+
+        #result-area, #wisdom-area {
+            margin-top: 30px;
+            padding: 30px 15px;
             border-radius: 35px;
             background: white;
             display: none;
-            animation: pop 0.4s ease-out;
+            animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
         }
 
-        @keyframes pop { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        #wisdom-area {
+            background: linear-gradient(180deg, #ffffff 0%, #f4f8f9 100%);
+            border-top: 8px solid var(--pogo-teal);
+        }
 
-        .score-label { font-size: 0.9rem; color: #7F8C8D; display: block; margin-bottom: 5px; }
-        .score-display { font-size: 3.5rem; font-weight: 800; color: var(--pogo-red); display: block; margin-bottom: 20px; }
+        .score-label { font-size: 0.85rem; color: #7F8C8D; display: block; margin-bottom: 5px; }
+        .score-display { font-size: 3.5rem; font-weight: 800; color: var(--pogo-red); display: block; margin-bottom: 15px; }
 
-        .feedback-title { display: block; font-size: 1.35rem; font-weight: 800; margin-bottom: 12px; }
-        .feedback-desc { display: block; font-size: 1.05rem; line-height: 1.8; color: #5D6D7E; }
+        .feedback-title { 
+            display: block; 
+            font-size: 1.3rem; 
+            font-weight: 800; 
+            margin-bottom: 12px; 
+        }
+        .feedback-desc { 
+            display: block; 
+            font-size: 1rem; 
+            line-height: 1.8; 
+            color: #5D6D7E; 
+            max-width: 90%; 
+            margin: 0 auto;
+        }
 
-        /* 特殊樣式：嚴重範圍 */
+        .wisdom-text {
+            font-size: 1.25rem;
+            font-weight: 800;
+            line-height: 1.8;
+            color: var(--pogo-dark);
+            margin: 25px 0;
+            padding: 10px 5px;
+            text-align: center;
+            word-break: break-word;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80px;
+        }
+
+        .close-circle {
+            width: 55px;
+            height: 55px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 25px auto 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            font-size: 22px;
+            color: var(--pogo-gray);
+            font-weight: bold;
+        }
+
+        .close-circle:active { transform: scale(0.9); }
+
         .urgent-alert { color: var(--pogo-red); }
+
+        @keyframes pop { 0% { transform: scale(0.85); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="pogo-container">
-    <header>
-        <h2>練陣前身心儀式</h2>
-        <div class="line"></div>
-        <p>每一場震撼的鼓聲，始於內心的平靜</p>
-    </header>
+    <div id="main-ritual">
+        <header>
+            <h2>練陣前身心儀式</h2>
+            <div class="line"></div>
+            <p>每一場震撼的鼓聲，始於內心的平靜</p>
+        </header>
 
-    <div class="section">
-        <label class="check-item"><input type="checkbox" class="task"> 已整理好情緒，不將私人情緒帶入練陣期間</label>
-        <label class="check-item"><input type="checkbox" class="task"> 具備守護團隊氣氛的自覺，互相鼓勵取代埋怨</label>
-        <label class="check-item"><input type="checkbox" class="task"> 保持專注，接受任何變化與調整</label>
-        <label class="check-item"><input type="checkbox" class="task"> 對自己有信心、耐心、恆心</label>
-        <label class="check-item"><input type="checkbox" class="task"> 接受任何動作調整，誠實面對自己</label>
-    </div>
+        <div class="section">
+            <label class="check-item"><input type="checkbox" class="task"> 已整理好情緒，不將私人情緒帶入練陣期間</label>
+            <label class="check-item"><input type="checkbox" class="task"> 具備守護團隊氣氛的自覺，互相鼓勵取代埋怨</label>
+            <label class="check-item"><input type="checkbox" class="task"> 保持專注，接受任何變化與調整</label>
+            <label class="check-item"><input type="checkbox" class="task"> 對自己有信心、耐心、恆心</label>
+            <label class="check-item"><input type="checkbox" class="task"> 接受任何動作調整，誠實面對自己</label>
+        </div>
 
-    <div class="star-box">
-        <span class="status-label">準備好幾顆星面對今日</span>
-        <div class="star-rating">
-            <input type="radio" id="5-stars" name="rating" value="5"><label for="5-stars">★</label>
-            <input type="radio" id="4-stars" name="rating" value="4"><label for="4-stars">★</label>
-            <input type="radio" id="3-stars" name="rating" value="3"><label for="3-stars">★</label>
-            <input type="radio" id="2-stars" name="rating" value="2"><label for="2-stars">★</label>
-            <input type="radio" id="1-star" name="rating" value="1"><label for="1-star">★</label>
+        <div class="star-box">
+            <span class="status-label">準備好幾顆星面對今日</span>
+            <div class="star-rating">
+                <input type="radio" id="5-stars" name="rating" value="5"><label for="5-stars">★</label>
+                <input type="radio" id="4-stars" name="rating" value="4"><label for="4-stars">★</label>
+                <input type="radio" id="3-stars" name="rating" value="3"><label for="3-stars">★</label>
+                <input type="radio" id="2-stars" name="rating" value="2"><label for="2-stars">★</label>
+                <input type="radio" id="1-star" name="rating" value="1"><label for="1-star">★</label>
+            </div>
+        </div>
+
+        <button class="btn" onclick="showAnalysis()">擊鼓開始</button>
+
+        <div id="result-area">
+            <span class="score-label">今日身心備戰狀態</span>
+            <span class="score-display" id="total-score">0%</span>
+            <div id="feedback-content"></div>
+            <!-- 按鈕文字修改 -->
+            <button class="btn btn-wisdom" id="wisdom-trigger" onclick="drawWisdom()">領取今日語錄</button>
         </div>
     </div>
 
-    <button class="btn" onclick="showAnalysis()">擊鼓開始</button>
-
-    <div id="result-area">
-        <span class="score-label">今日身心備戰狀態</span>
-        <span class="score-display" id="total-score">0%</span>
-        <div id="feedback-content"></div>
+    <!-- 語錄顯示區 -->
+    <div id="wisdom-area">
+        <!-- 彈出畫面標題修改 -->
+        <span class="score-label" style="letter-spacing: 0.3em; font-weight: 900; color: var(--pogo-blue);">今日語錄</span>
+        <div style="height: 1px; background: linear-gradient(90deg, transparent, #ddd, transparent); margin: 15px 0;"></div>
+        
+        <div class="wisdom-text" id="wisdom-display"></div>
+        
+        <p style="font-size: 0.8rem; color: #AAB; margin-top: 10px;">讓這份智慧與你的節奏同行</p>
+        
+        <div class="close-circle" onclick="resetRitual()">✕</div>
     </div>
 </div>
 
 <script>
+    const wisdomQuotes = [
+        "鼓聲不僅是節奏，<br>更是你靈魂的跳動。",
+        "平靜的湖面才能映射出<br>最準確的月光。",
+        "真正的強大，是在混亂中<br>依然保有節奏。",
+        "每一擊都是新的開始，<br>不糾結於上一聲的失誤。",
+        "專注於當下這一響，<br>聲音自然會傳達到遠方。",
+        "與夥伴的呼吸同步，<br>那才是最強大的陣型。",
+        "心穩，手就穩；<br>意到，氣就到。",
+        "今日的汗水，<br>會化作舞台上最耀眼的光。"
+    ];
+
     function showAnalysis() {
         const checks = document.querySelectorAll('.task:checked').length;
         const checkScore = checks * 12;
@@ -170,13 +257,12 @@
         const resultArea = document.getElementById('result-area');
         const scoreDisplay = document.getElementById('total-score');
         const feedbackContent = document.getElementById('feedback-content');
+        const wisdomBtn = document.getElementById('wisdom-trigger');
 
         resultArea.style.display = 'block';
         scoreDisplay.innerText = finalScore + '%';
 
-        let title = "";
-        let desc = "";
-        let isUrgent = false;
+        let title, desc, isUrgent = false;
 
         if (finalScore === 100) {
             title = "巔峰狀態！";
@@ -201,9 +287,29 @@
             <span class="feedback-desc">${desc}</span>
         `;
         
+        wisdomBtn.style.display = 'block';
+        
         setTimeout(() => {
             resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }, 100);
+    }
+
+    function drawWisdom() {
+        const randomIndex = Math.floor(Math.random() * wisdomQuotes.length);
+        document.getElementById('wisdom-display').innerHTML = `「${wisdomQuotes[randomIndex]}」`;
+        
+        document.getElementById('main-ritual').style.display = 'none';
+        document.getElementById('wisdom-area').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+
+    function resetRitual() {
+        document.querySelectorAll('.task').forEach(c => c.checked = false);
+        document.querySelectorAll('input[name="rating"]').forEach(r => r.checked = false);
+        document.getElementById('result-area').style.display = 'none';
+        document.getElementById('wisdom-area').style.display = 'none';
+        document.getElementById('main-ritual').style.display = 'block';
+        window.scrollTo(0, 0);
     }
 </script>
 
