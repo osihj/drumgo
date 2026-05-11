@@ -110,7 +110,7 @@
             display: none;
         }
 
-        #result-area, #wisdom-area {
+        #result-area {
             margin-top: 30px;
             padding: 30px 15px;
             border-radius: 35px;
@@ -120,63 +120,60 @@
             text-align: center;
         }
 
+        /* 語錄區塊立體感設計 */
         #wisdom-area {
-            background: linear-gradient(180deg, #ffffff 0%, #f4f8f9 100%);
-            border-top: 8px solid var(--pogo-teal);
+            margin-top: 40px; /* 留位置給分數圓環 */
+            padding: 40px 25px;
+            border-radius: 35px;
+            background: #FFFFFF;
+            display: none;
+            animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            border: 4px solid var(--pogo-red-dark);
+            box-shadow: 8px 8px 0px var(--pogo-yellow), 15px 15px 30px rgba(0,0,0,0.1);
+            position: relative;
         }
+
+        /* 語錄畫面中的分數顯示 */
+        .wisdom-score-badge {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--pogo-red);
+            color: white;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 4px solid var(--pogo-red-dark);
+            box-shadow: 4px 4px 0px var(--pogo-dark);
+            font-weight: 800;
+            z-index: 2;
+        }
+        .wisdom-score-badge .pct { font-size: 1.4rem; line-height: 1; }
+        .wisdom-score-badge .txt { font-size: 0.6rem; margin-top: 2px; letter-spacing: 0; }
 
         .score-label { font-size: 0.85rem; color: #7F8C8D; display: block; margin-bottom: 5px; }
         .score-display { font-size: 3.5rem; font-weight: 800; color: var(--pogo-red); display: block; margin-bottom: 15px; }
 
-        .feedback-title { 
-            display: block; 
-            font-size: 1.3rem; 
-            font-weight: 800; 
-            margin-bottom: 12px; 
-        }
-        .feedback-desc { 
-            display: block; 
-            font-size: 1rem; 
-            line-height: 1.8; 
-            color: #5D6D7E; 
-            max-width: 90%; 
-            margin: 0 auto;
-        }
-
         .wisdom-text {
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             font-weight: 800;
-            line-height: 1.8;
+            line-height: 1.7;
             color: var(--pogo-dark);
-            margin: 25px 0;
-            padding: 10px 5px;
+            margin: 20px 0;
             text-align: center;
-            word-break: break-word;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 80px;
+            min-height: 120px;
+            white-space: nowrap; 
         }
-
-        .close-circle {
-            width: 55px;
-            height: 55px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 25px auto 5px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            font-size: 22px;
-            color: var(--pogo-gray);
-            font-weight: bold;
-        }
-
-        .close-circle:active { transform: scale(0.9); }
-
-        .urgent-alert { color: var(--pogo-red); }
 
         @keyframes pop { 0% { transform: scale(0.85); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     </style>
@@ -222,18 +219,26 @@
 
     <!-- 語錄顯示區 -->
     <div id="wisdom-area">
-        <span class="score-label" style="letter-spacing: 0.3em; font-weight: 900; color: var(--pogo-blue);">今日語錄</span>
-        <div style="height: 1px; background: linear-gradient(90deg, transparent, #ddd, transparent); margin: 15px 0;"></div>
+        <!-- 分數標籤 -->
+        <div class="wisdom-score-badge">
+            <span class="pct" id="wisdom-score-pct">0%</span>
+            <span class="txt">READY</span>
+        </div>
+
+        <span class="score-label" style="letter-spacing: 0.3em; font-weight: 900; color: var(--pogo-red-dark); font-size: 1.1rem; margin-top: 10px;">今日語錄</span>
+        <div style="height: 3px; background: var(--pogo-yellow); width: 60px; margin: 15px auto;"></div>
         
         <div class="wisdom-text" id="wisdom-display"></div>
         
-        <p style="font-size: 0.8rem; color: #AAB; margin-top: 10px;">讓這份智慧與你的節奏同行</p>
-        
-        <div class="close-circle" onclick="resetRitual()">✕</div>
+        <div style="margin-top: 20px;">
+            <p style="font-size: 0.85rem; color: #999; font-style: italic;">讓這份智慧與你的節奏同行</p>
+        </div>
     </div>
 </div>
 
 <script>
+    let currentScore = 0; // 全域變數紀錄當前分數
+
     const wisdomQuotes = [
         "鼓聲不僅是節奏，<br>更是你靈魂的跳動。",
         "心是鼓的核心，<br>心定則聲正，心靜則氣長。",
@@ -257,10 +262,10 @@
         "讓鼓聲帶走疲憊，<br>讓專注喚醒神采。",
         "你是節奏的源頭，<br>聽從內心的指引，擊出你的態度。",
         "身體的柔軟，<br>是為了支撐更剛強的力量。",
-        "每一次擊響，<br>都是在喚醒生命深處的勇氣。", // 23. 已更新
+        "每一次擊響，<br>都是在喚醒生命深處的勇氣。",
         "每一次練陣，<br>是身與心的重新對齊。",
         "快而不亂，慢而不斷，<br>在起落之間掌握節奏的真意。",
-        "放下自我的節拍，<br>在共鳴中與夥伴合而為一。",
+        "放下自意的節拍，<br>在共鳴中與夥伴合而為一。",
         "每一次揮棒的弧度，<br>都畫出了心靈的輪廓。",
         "不為表演而打，<br>為誠實地面對自己而打。",
         "內外清澈如鏡，<br>擊鼓即是生命最誠實的回答。",
@@ -273,7 +278,7 @@
         const checkScore = checks * 12;
         const starRating = document.querySelector('input[name="rating"]:checked')?.value || 0;
         const starScore = starRating * 8;
-        const finalScore = checkScore + starScore;
+        currentScore = checkScore + starScore; // 儲存分數
 
         const resultArea = document.getElementById('result-area');
         const scoreDisplay = document.getElementById('total-score');
@@ -281,31 +286,26 @@
         const wisdomBtn = document.getElementById('wisdom-trigger');
 
         resultArea.style.display = 'block';
-        scoreDisplay.innerText = finalScore + '%';
+        scoreDisplay.innerText = currentScore + '%';
 
-        let title, desc, isUrgent = false;
-
-        if (finalScore === 100) {
+        let title, desc;
+        if (currentScore === 100) {
             title = "巔峰狀態！";
             desc = "身心已完全合一。今日的每一聲鼓響，都將震撼靈魂。";
-        } else if (finalScore >= 80) {
+        } else if (currentScore >= 80) {
             title = "最良狀態。";
             desc = "內心平定，專注力飽滿。讓力量在鼓棒間流動。";
-        } else if (finalScore >= 50) {
+        } else if (currentScore >= 50) {
             title = "穩定進步。";
             desc = "心境尚在調和。請先透過幾次深呼吸，找回身體與節奏的連結。";
-        } else if (finalScore >= 24) {
+        } else {
             title = "警告：雜訊過多。";
             desc = "目前的狀態較為浮躁。建議先放慢練習速度，將注意力收回到呼吸上。";
-        } else {
-            isUrgent = true;
-            title = "急需調整！";
-            desc = "當前狀態極不穩定。強行練習恐影響表現，請立即靜心五分鐘，排除雜念後再開始。";
         }
 
         feedbackContent.innerHTML = `
-            <span class="feedback-title ${isUrgent ? 'urgent-alert' : ''}">${title}</span>
-            <span class="feedback-desc">${desc}</span>
+            <span style="display: block; font-size: 1.3rem; font-weight: 800; margin-bottom: 12px;">${title}</span>
+            <span style="display: block; font-size: 1rem; line-height: 1.8; color: #5D6D7E; max-width: 90%; margin: 0 auto;">${desc}</span>
         `;
         
         wisdomBtn.style.display = 'block';
@@ -317,19 +317,13 @@
 
     function drawWisdom() {
         const randomIndex = Math.floor(Math.random() * wisdomQuotes.length);
-        document.getElementById('wisdom-display').innerHTML = `「${wisdomQuotes[randomIndex]}」`;
+        document.getElementById('wisdom-display').innerHTML = `<span>「${wisdomQuotes[randomIndex]}」</span>`;
+        
+        // 同步百分比到語錄畫面
+        document.getElementById('wisdom-score-pct').innerText = currentScore + '%';
         
         document.getElementById('main-ritual').style.display = 'none';
         document.getElementById('wisdom-area').style.display = 'block';
-        window.scrollTo(0, 0);
-    }
-
-    function resetRitual() {
-        document.querySelectorAll('.task').forEach(c => c.checked = false);
-        document.querySelectorAll('input[name="rating"]').forEach(r => r.checked = false);
-        document.getElementById('result-area').style.display = 'none';
-        document.getElementById('wisdom-area').style.display = 'none';
-        document.getElementById('main-ritual').style.display = 'block';
         window.scrollTo(0, 0);
     }
 </script>
