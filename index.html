@@ -14,7 +14,7 @@
             --pogo-dark: #2C3E50;
             --pogo-white: rgba(255, 255, 255, 0.95);
             --pogo-yellow: #FFCE00;
-            --pogo-gray: #607D8B;
+            --pogo-text-light: #94A3B8; /* 低調的日期顏色 */
         }
 
         body {
@@ -47,132 +47,64 @@
         header p { font-size: 0.95rem; color: #7F8C8D; margin: 0 0 35px 0; }
 
         .section { text-align: left; margin-bottom: 30px; }
-
-        .check-item {
-            display: flex;
-            align-items: flex-start;
-            background: white;
-            margin-bottom: 12px;
-            padding: 16px 18px;
-            border-radius: 25px;
-            font-size: 1.05rem;
-            line-height: 1.4;
-            cursor: pointer;
-            box-shadow: 0 4px 0px rgba(0,0,0,0.05);
-        }
-
-        input[type="checkbox"] {
-            appearance: none;
-            width: 20px; height: 20px;
-            border: 2px solid #BBB;
-            border-radius: 50%;
-            margin-right: 12px;
-            margin-top: 2px;
-            flex-shrink: 0;
-            position: relative;
-        }
-
+        .check-item { display: flex; align-items: flex-start; background: white; margin-bottom: 12px; padding: 16px 18px; border-radius: 25px; font-size: 1.05rem; box-shadow: 0 4px 0px rgba(0,0,0,0.05); cursor: pointer; }
+        
+        input[type="checkbox"] { appearance: none; width: 20px; height: 20px; border: 2px solid #BBB; border-radius: 50%; margin-right: 12px; flex-shrink: 0; position: relative; }
         input[type="checkbox"]:checked { background: var(--pogo-green); border-color: var(--pogo-green); }
-        input[type="checkbox"]:checked::after {
-            content: "✓"; color: white; font-size: 12px; position: absolute; left: 4px; top: 0px;
-        }
+        input[type="checkbox"]:checked::after { content: "✓"; color: white; font-size: 12px; position: absolute; left: 4px; top: 0px; }
 
         .star-box { background: rgba(255, 255, 255, 0.5); border-radius: 30px; padding: 20px; margin-bottom: 25px; }
-        .status-label { font-size: 1rem; font-weight: 600; color: #B8977E; display: block; margin-bottom: 10px; }
-        
         .star-rating { display: flex; flex-direction: row-reverse; justify-content: center; gap: 10px; }
         .star-rating input { display: none; }
         .star-rating label { font-size: 32px; color: #E8E8E8; cursor: pointer; }
         .star-rating input:checked ~ label { color: var(--pogo-yellow); }
 
-        .btn {
-            background-color: var(--pogo-red);
-            color: white;
-            border: none;
-            padding: 18px;
-            width: 100%;
-            border-radius: 100px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 6px 0px var(--pogo-red-dark);
-            letter-spacing: 0.2em;
-            transition: transform 0.1s;
-        }
-
+        .btn { background-color: var(--pogo-red); color: white; border: none; padding: 18px; width: 100%; border-radius: 100px; font-size: 1.2rem; font-weight: 700; cursor: pointer; box-shadow: 0 6px 0px var(--pogo-red-dark); letter-spacing: 0.2em; transition: transform 0.1s; }
         .btn:active { transform: translateY(4px); box-shadow: 0 2px 0px var(--pogo-red-dark); }
 
-        .btn-wisdom {
-            background: linear-gradient(90deg, #42F5E6, #2EB9E6);
-            margin-top: 25px;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 0px #2598bd;
-            display: none;
-        }
-
-        #result-area {
-            margin-top: 30px;
-            padding: 30px 15px;
-            border-radius: 35px;
-            background: white;
-            display: none;
-            animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        #result-area { 
+            margin-top: 30px; 
+            padding: 30px 20px; 
+            border-radius: 35px; 
+            background: white; 
+            display: none; 
+            animation: pop 0.4s ease-out;
             text-align: center;
         }
+        .score-display { font-size: 3.5rem; font-weight: 800; color: var(--pogo-red); display: block; margin-bottom: 10px; text-align: center; }
+        .feedback-title { font-size: 1.4rem; font-weight: 800; display: block; margin-bottom: 10px; text-align: center; }
+        .feedback-desc { font-size: 1.05rem; color: #5D6D7E; line-height: 1.6; display: block; text-align: center; max-width: 90%; margin: 0 auto; }
 
-        /* 語錄區塊立體感設計 */
+        /* 語錄卡片與電池 */
         #wisdom-area {
-            margin-top: 40px; /* 留位置給分數圓環 */
-            padding: 40px 25px;
+            margin-top: 50px;
+            padding: 45px 25px 30px;
             border-radius: 35px;
             background: #FFFFFF;
             display: none;
             animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-align: center;
             border: 4px solid var(--pogo-red-dark);
-            box-shadow: 8px 8px 0px var(--pogo-yellow), 15px 15px 30px rgba(0,0,0,0.1);
+            box-shadow: 10px 10px 0px var(--pogo-yellow);
             position: relative;
         }
 
-        /* 語錄畫面中的分數顯示 */
-        .wisdom-score-badge {
-            position: absolute;
-            top: -35px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--pogo-red);
-            color: white;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border: 4px solid var(--pogo-red-dark);
-            box-shadow: 4px 4px 0px var(--pogo-dark);
-            font-weight: 800;
-            z-index: 2;
-        }
-        .wisdom-score-badge .pct { font-size: 1.4rem; line-height: 1; }
-        .wisdom-score-badge .txt { font-size: 0.6rem; margin-top: 2px; letter-spacing: 0; }
+        .battery-container { position: absolute; top: -30px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; z-index: 5; }
+        .battery-body { width: 100px; height: 45px; border: 4px solid var(--pogo-dark); background: white; border-radius: 8px; position: relative; padding: 4px; box-sizing: border-box; box-shadow: 4px 4px 0px rgba(0,0,0,0.2); }
+        .battery-head { width: 8px; height: 18px; background: var(--pogo-dark); border-radius: 0 4px 4px 0; }
+        .battery-fill { height: 100%; background: var(--pogo-green); width: 0%; border-radius: 2px; transition: width 1s ease-out; }
+        .battery-text { position: absolute; width: 100%; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 900; font-size: 0.95rem; color: var(--pogo-dark); text-shadow: 1px 1px 0px white; }
 
-        .score-label { font-size: 0.85rem; color: #7F8C8D; display: block; margin-bottom: 5px; }
-        .score-display { font-size: 3.5rem; font-weight: 800; color: var(--pogo-red); display: block; margin-bottom: 15px; }
-
-        .wisdom-text {
-            font-size: 1.35rem;
-            font-weight: 800;
-            line-height: 1.7;
-            color: var(--pogo-dark);
-            margin: 20px 0;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 120px;
-            white-space: nowrap; 
+        .wisdom-text { font-size: 1.35rem; font-weight: 800; line-height: 1.7; color: var(--pogo-dark); margin: 25px 0; min-height: 100px; display: flex; align-items: center; justify-content: center; }
+        
+        /* 日期顯示：降低明顯度 */
+        .date-display { 
+            margin-top: 12px; 
+            font-size: 0.9rem; 
+            font-weight: 500; 
+            color: var(--pogo-text-light); 
+            letter-spacing: 0.05em; 
+            opacity: 0.7;
         }
 
         @keyframes pop { 0% { transform: scale(0.85); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
@@ -197,7 +129,7 @@
         </div>
 
         <div class="star-box">
-            <span class="status-label">準備好幾顆星面對今日</span>
+            <span style="font-size: 1rem; font-weight: 600; color: #B8977E; display: block; margin-bottom: 10px;">準備好幾顆星面對今日</span>
             <div class="star-rating">
                 <input type="radio" id="5-stars" name="rating" value="5"><label for="5-stars">★</label>
                 <input type="radio" id="4-stars" name="rating" value="4"><label for="4-stars">★</label>
@@ -210,34 +142,40 @@
         <button class="btn" onclick="showAnalysis()">擊鼓開始</button>
 
         <div id="result-area">
-            <span class="score-label">今日身心備戰狀態</span>
-            <span class="score-display" id="total-score">0%</span>
-            <div id="feedback-content"></div>
-            <button class="btn btn-wisdom" id="wisdom-trigger" onclick="drawWisdom()">領取今日語錄</button>
+            <span style="font-size: 0.85rem; color: #7F8C8D; display: block; margin-bottom: 5px;">今日身心備戰狀態</span>
+            <span id="total-score" class="score-display">0%</span>
+            <div id="feedback-content">
+                <span class="feedback-title" id="fb-title">狀態分析中...</span>
+                <span class="feedback-desc" id="fb-desc"></span>
+            </div>
+            <button class="btn" style="margin-top: 25px; background: linear-gradient(90deg, #42F5E6, #2EB9E6); box-shadow: 0 4px 0px #2598bd;" onclick="drawWisdom()">領取今日語錄</button>
         </div>
     </div>
 
     <!-- 語錄顯示區 -->
     <div id="wisdom-area">
-        <!-- 分數標籤 -->
-        <div class="wisdom-score-badge">
-            <span class="pct" id="wisdom-score-pct">0%</span>
-            <span class="txt">READY</span>
+        <div class="battery-container">
+            <div class="battery-body">
+                <div class="battery-fill" id="battery-fill"></div>
+                <div class="battery-text" id="battery-text">0%</div>
+            </div>
+            <div class="battery-head"></div>
         </div>
 
-        <span class="score-label" style="letter-spacing: 0.3em; font-weight: 900; color: var(--pogo-red-dark); font-size: 1.1rem; margin-top: 10px;">今日語錄</span>
+        <span style="letter-spacing: 0.3em; font-weight: 900; color: var(--pogo-red-dark); font-size: 1.1rem; display: block;">今日語錄</span>
         <div style="height: 3px; background: var(--pogo-yellow); width: 60px; margin: 15px auto;"></div>
         
         <div class="wisdom-text" id="wisdom-display"></div>
         
-        <div style="margin-top: 20px;">
-            <p style="font-size: 0.85rem; color: #999; font-style: italic;">讓這份智慧與你的節奏同行</p>
+        <div style="margin-top: 10px;">
+            <p style="font-size: 0.8rem; color: #B0BEC5; font-style: italic; margin-bottom: 2px;">讓這份智慧與你的節奏同行</p>
+            <div class="date-display" id="date-display"></div>
         </div>
     </div>
 </div>
 
 <script>
-    let currentScore = 0; // 全域變數紀錄當前分數
+    let currentScore = 0;
 
     const wisdomQuotes = [
         "鼓聲不僅是節奏，<br>更是你靈魂的跳動。",
@@ -257,15 +195,15 @@
         "讓雜念隨揮動散去，<br>只留下純粹的共振。",
         "節奏感不是技巧，<br>而是你內在能量的顯化。",
         "順應氣息的起伏，<br>讓鼓聲隨你的呼吸自然綻放。",
-        "每一次的打擊，<br>都是對內心恐懼的破除。",
+        "每一次的打擊，<br>職是對內心恐懼的破除。",
         "心定如山，擊鼓如電，<br>在極靜中爆發最強的力量。",
         "讓鼓聲帶走疲憊，<br>讓專注喚醒神采。",
         "你是節奏的源頭，<br>聽從內心的指引，擊出你的態度。",
         "身體的柔軟，<br>是為了支撐更剛強的力量。",
-        "每一次擊響，<br>都是在喚醒生命深處的勇氣。",
+        "每一次擊響，<br>是在喚醒生命深處的勇氣。",
         "每一次練陣，<br>是身與心的重新對齊。",
         "快而不亂，慢而不斷，<br>在起落之間掌握節奏的真意。",
-        "放下自意的節拍，<br>在共鳴中與夥伴合而為一。",
+        "放下自我的節拍，<br>在共鳴中與夥伴合而為一。",
         "每一次揮棒的弧度，<br>都畫出了心靈的輪廓。",
         "不為表演而打，<br>為誠實地面對自己而打。",
         "內外清澈如鏡，<br>擊鼓即是生命最誠實的回答。",
@@ -275,43 +213,26 @@
 
     function showAnalysis() {
         const checks = document.querySelectorAll('.task:checked').length;
-        const checkScore = checks * 12;
         const starRating = document.querySelector('input[name="rating"]:checked')?.value || 0;
-        const starScore = starRating * 8;
-        currentScore = checkScore + starScore; // 儲存分數
+        currentScore = (checks * 12) + (starRating * 8);
 
-        const resultArea = document.getElementById('result-area');
-        const scoreDisplay = document.getElementById('total-score');
-        const feedbackContent = document.getElementById('feedback-content');
-        const wisdomBtn = document.getElementById('wisdom-trigger');
-
-        resultArea.style.display = 'block';
-        scoreDisplay.innerText = currentScore + '%';
+        document.getElementById('result-area').style.display = 'block';
+        document.getElementById('total-score').innerText = currentScore + '%';
 
         let title, desc;
-        if (currentScore === 100) {
-            title = "巔峰狀態！";
-            desc = "身心已完全合一。今日的每一聲鼓響，都將震撼靈魂。";
-        } else if (currentScore >= 80) {
-            title = "最良狀態。";
-            desc = "內心平定，專注力飽滿。讓力量在鼓棒間流動。";
-        } else if (currentScore >= 50) {
-            title = "穩定進步。";
-            desc = "心境尚在調和。請先透過幾次深呼吸，找回身體與節奏的連結。";
-        } else {
-            title = "警告：雜訊過多。";
-            desc = "目前的狀態較為浮躁。建議先放慢練習速度，將注意力收回到呼吸上。";
+        if (currentScore >= 90) { 
+            title = "滿格狀態！"; 
+            desc = "今日已準備就緒，請維持能量繼續前行！"; 
         }
+        else if (currentScore >= 70) { title = "能量充沛"; desc = "內心平定，專注力飽滿。讓力量在鼓棒間流動。"; }
+        else if (currentScore >= 50) { title = "正在充電"; desc = "心境尚在調和。請透過幾次深呼吸，找回節奏。"; }
+        else { title = "電量過低"; desc = "目前狀態較為浮躁。建議靜心五分鐘後再開始。"; }
 
-        feedbackContent.innerHTML = `
-            <span style="display: block; font-size: 1.3rem; font-weight: 800; margin-bottom: 12px;">${title}</span>
-            <span style="display: block; font-size: 1rem; line-height: 1.8; color: #5D6D7E; max-width: 90%; margin: 0 auto;">${desc}</span>
-        `;
-        
-        wisdomBtn.style.display = 'block';
-        
+        document.getElementById('fb-title').innerText = title;
+        document.getElementById('fb-desc').innerText = desc;
+
         setTimeout(() => {
-            resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            document.getElementById('result-area').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }, 100);
     }
 
@@ -319,12 +240,26 @@
         const randomIndex = Math.floor(Math.random() * wisdomQuotes.length);
         document.getElementById('wisdom-display').innerHTML = `<span>「${wisdomQuotes[randomIndex]}」</span>`;
         
-        // 同步百分比到語錄畫面
-        document.getElementById('wisdom-score-pct').innerText = currentScore + '%';
+        const fill = document.getElementById('battery-fill');
+        const txt = document.getElementById('battery-text');
+        txt.innerText = currentScore + '%';
+        
+        if(currentScore < 35) fill.style.background = 'var(--pogo-red)';
+        else if(currentScore < 75) fill.style.background = 'var(--pogo-yellow)';
+        else fill.style.background = 'var(--pogo-green)';
+
+        const now = new Date();
+        const year = now.getFullYear() - 1911;
+        const month = now.getMonth() + 1;
+        const day = now.getDate();
+        document.getElementById('date-display').innerText = `${year}.${month}.${day}`;
         
         document.getElementById('main-ritual').style.display = 'none';
         document.getElementById('wisdom-area').style.display = 'block';
-        window.scrollTo(0, 0);
+
+        setTimeout(() => {
+            fill.style.width = currentScore + '%';
+        }, 100);
     }
 </script>
 
