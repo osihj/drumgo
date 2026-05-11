@@ -14,7 +14,7 @@
             --pogo-dark: #2C3E50;
             --pogo-white: rgba(255, 255, 255, 0.95);
             --pogo-yellow: #FFCE00;
-            --pogo-text-light: #94A3B8; /* 低調的日期顏色 */
+            --pogo-text-light: #94A3B8;
         }
 
         body {
@@ -34,7 +34,7 @@
             background: var(--pogo-white);
             border-radius: 40px;
             padding: 40px 20px;
-            max-width: 460px;
+            max-width: 500px; /* 增加寬度以符合版面伸展 */
             width: 100%;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             text-align: center;
@@ -69,16 +69,13 @@
             background: white; 
             display: none; 
             animation: pop 0.4s ease-out;
-            text-align: center;
         }
-        .score-display { font-size: 3.5rem; font-weight: 800; color: var(--pogo-red); display: block; margin-bottom: 10px; text-align: center; }
-        .feedback-title { font-size: 1.4rem; font-weight: 800; display: block; margin-bottom: 10px; text-align: center; }
-        .feedback-desc { font-size: 1.05rem; color: #5D6D7E; line-height: 1.6; display: block; text-align: center; max-width: 90%; margin: 0 auto; }
-
-        /* 語錄卡片與電池 */
+        .score-display { font-size: 3.5rem; font-weight: 800; color: var(--pogo-red); display: block; margin-bottom: 10px; }
+        
+        /* 語錄卡片區域 */
         #wisdom-area {
             margin-top: 50px;
-            padding: 45px 25px 30px;
+            padding: 45px 20px 30px; /* 適度調整內距 */
             border-radius: 35px;
             background: #FFFFFF;
             display: none;
@@ -95,16 +92,28 @@
         .battery-fill { height: 100%; background: var(--pogo-green); width: 0%; border-radius: 2px; transition: width 1s ease-out; }
         .battery-text { position: absolute; width: 100%; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 900; font-size: 0.95rem; color: var(--pogo-dark); text-shadow: 1px 1px 0px white; }
 
-        .wisdom-text { font-size: 1.35rem; font-weight: 800; line-height: 1.7; color: var(--pogo-dark); margin: 25px 0; min-height: 100px; display: flex; align-items: center; justify-content: center; }
+        /* 字體調整為 16pt (約 1.35rem) */
+        .wisdom-text { 
+            font-size: 1.35rem; 
+            font-weight: 800; 
+            line-height: 1.8; 
+            color: var(--pogo-dark); 
+            margin: 25px 0; 
+            min-height: 90px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
         
-        /* 日期顯示：降低明顯度 */
         .date-display { 
-            margin-top: 12px; 
+            margin-top: 15px; 
             font-size: 0.9rem; 
             font-weight: 500; 
             color: var(--pogo-text-light); 
             letter-spacing: 0.05em; 
-            opacity: 0.7;
+            opacity: 0.6;
         }
 
         @keyframes pop { 0% { transform: scale(0.85); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
@@ -145,8 +154,8 @@
             <span style="font-size: 0.85rem; color: #7F8C8D; display: block; margin-bottom: 5px;">今日身心備戰狀態</span>
             <span id="total-score" class="score-display">0%</span>
             <div id="feedback-content">
-                <span class="feedback-title" id="fb-title">狀態分析中...</span>
-                <span class="feedback-desc" id="fb-desc"></span>
+                <span class="feedback-title" id="fb-title" style="font-size: 1.4rem; font-weight: 800; display: block; margin-bottom: 10px;"></span>
+                <span class="feedback-desc" id="fb-desc" style="font-size: 1.05rem; color: #5D6D7E; line-height: 1.6; display: block; max-width: 90%; margin: 0 auto;"></span>
             </div>
             <button class="btn" style="margin-top: 25px; background: linear-gradient(90deg, #42F5E6, #2EB9E6); box-shadow: 0 4px 0px #2598bd;" onclick="drawWisdom()">領取今日語錄</button>
         </div>
@@ -180,35 +189,35 @@
     const wisdomQuotes = [
         "鼓聲不僅是節奏，<br>更是你靈魂的跳動。",
         "心是鼓的核心，<br>心定則聲正，心靜則氣長。",
-        "真正的強大，是在混亂中<br>依然保有節奏。",
-        "每一擊都是新的開始，<br>不糾結於上一聲的失誤。",
-        "專注於當下這一響，<br>聲音自然會傳達到遠方。",
-        "與夥伴的呼吸同步，<br>那才是最強大的陣型。",
-        "心穩，手就穩；<br>意到，氣就到。",
-        "今日的汗水，<br>會化作舞台上最耀眼的光。",
-        "同聲同氣，<br>練的是同一顆心。",
-        "練習不是為了完美，<br>是為了遇見更好的自己。",
-        "以氣帶力，以心擊鼓，<br>讓每一響都直入人心。",
-        "當你放下執著，<br>鼓棒會成為身體的延伸。",
-        "鼓棒是你的手，鼓面是你的心，<br>擊出的每一聲都是生命的力量。",
-        "讓心氣響徹雲霄，<br>取決於你當下的心量。",
-        "讓雜念隨揮動散去，<br>只留下純粹的共振。",
-        "節奏感不是技巧，<br>而是你內在能量的顯化。",
-        "順應氣息的起伏，<br>讓鼓聲隨你的呼吸自然綻放。",
-        "每一次的打擊，<br>職是對內心恐懼的破除。",
-        "心定如山，擊鼓如電，<br>在極靜中爆發最強的力量。",
-        "讓鼓聲帶走疲憊，<br>讓專注喚醒神采。",
-        "你是節奏的源頭，<br>聽從內心的指引，擊出你的態度。",
-        "身體的柔軟，<br>是為了支撐更剛強的力量。",
-        "每一次擊響，<br>是在喚醒生命深處的勇氣。",
-        "每一次練陣，<br>是身與心的重新對齊。",
-        "快而不亂，慢而不斷，<br>在起落之間掌握節奏的真意。",
-        "放下自我的節拍，<br>在共鳴中與夥伴合而為一。",
-        "每一次揮棒的弧度，<br>都畫出了心靈的輪廓。",
-        "不為表演而打，<br>為誠實地面對自己而打。",
-        "內外清澈如鏡，<br>擊鼓即是生命最誠實的回答。",
-        "讓每一滴汗水都帶著感謝，<br>獻給此刻的專注。",
-        "陣法在腳下，節奏在心中，<br>勇敢走出你的步法。"
+        "真正的強大，是在混亂中依然保有節奏。",
+        "每一擊都是新的開始，不糾結於上一聲的失誤。",
+        "專注於當下這一響，聲音自然會傳達到遠方。",
+        "與夥伴的呼吸同步，那才是最強大的陣型。",
+        "心穩，手就穩；意到，氣就到。",
+        "今日的汗水，會化作舞台上最耀眼的光。",
+        "同聲同氣，練的是同一顆心。",
+        "練習不是為了完美，是為了遇見更好的自己。",
+        "以氣帶力，以心擊鼓，讓每一響都直入人心。",
+        "當你放下執著，鼓棒會成為身體的延伸。",
+        "鼓棒是你的手，鼓面是你的心，擊出的每一聲都是力量。",
+        "讓心氣響徹雲霄，取決於你當下的心量。",
+        "讓雜念隨揮動散去，只留下純粹的共振。",
+        "節奏感不是技巧，而是你內在能量的顯化。",
+        "順應氣息的起伏，讓鼓聲隨你的呼吸自然綻放。",
+        "每一次的打擊，是對內心恐懼的破除。",
+        "心定如山，擊鼓如電，在極靜中爆發最強的力量。",
+        "讓鼓聲帶走疲憊，讓專注喚醒神采。",
+        "你是節奏的源頭，聽從內心指引，擊出你的態度。",
+        "身體的柔軟，是為了支撐更剛強的力量。",
+        "每一次擊響，是在喚醒生命深處的勇氣。",
+        "每一次練陣，是身與心的重新對齊。",
+        "快而不亂，慢而不斷，在起落之間掌握節奏。",
+        "放下自我的節拍，在共鳴中與夥伴合而為一。",
+        "每一次揮棒的弧度，都畫出了心靈的輪廓。",
+        "不為表演而打，為誠實地面對自己而打。",
+        "內外清澈如鏡，擊鼓即是生命最誠實的回答。",
+        "讓每一滴汗水都帶著感謝，獻給此刻的專注。",
+        "陣法在腳下，節奏在心中，勇敢走出你的步法。"
     ];
 
     function showAnalysis() {
@@ -220,13 +229,10 @@
         document.getElementById('total-score').innerText = currentScore + '%';
 
         let title, desc;
-        if (currentScore >= 90) { 
-            title = "滿格狀態！"; 
-            desc = "今日已準備就緒，請維持能量繼續前行！"; 
-        }
+        if (currentScore >= 90) { title = "滿格狀態！"; desc = "今日已準備就緒，請維持能量繼續前行！"; }
         else if (currentScore >= 70) { title = "能量充沛"; desc = "內心平定，專注力飽滿。讓力量在鼓棒間流動。"; }
         else if (currentScore >= 50) { title = "正在充電"; desc = "心境尚在調和。請透過幾次深呼吸，找回節奏。"; }
-        else { title = "電量過低"; desc = "目前狀態較為浮躁。建議靜心五分鐘後再開始。"; }
+        else { title = "電量過低"; desc = "目前狀態較為浮躁。建議靜心五分鐘，排除雜念後再開始。"; }
 
         document.getElementById('fb-title').innerText = title;
         document.getElementById('fb-desc').innerText = desc;
@@ -238,7 +244,7 @@
 
     function drawWisdom() {
         const randomIndex = Math.floor(Math.random() * wisdomQuotes.length);
-        document.getElementById('wisdom-display').innerHTML = `<span>「${wisdomQuotes[randomIndex]}」</span>`;
+        document.getElementById('wisdom-display').innerHTML = `<span>${wisdomQuotes[randomIndex]}</span>`;
         
         const fill = document.getElementById('battery-fill');
         const txt = document.getElementById('battery-text');
