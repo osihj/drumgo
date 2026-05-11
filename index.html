@@ -11,10 +11,12 @@
             --pogo-green: #38D3A0;
             --pogo-red: #FF3847;
             --pogo-red-dark: #C62828;
+            --pogo-pink: #FF85A1;
             --pogo-dark: #2C3E50;
             --pogo-white: rgba(255, 255, 255, 0.95);
             --pogo-yellow: #FFCE00;
             --pogo-text-light: #94A3B8;
+            --pogo-border-light: #D4EBF2;
         }
 
         body {
@@ -44,7 +46,7 @@
         }
 
         header h2 { font-weight: 700; font-size: 1.6rem; margin: 0; color: var(--pogo-dark); }
-        header .line { width: 40px; height: 2px; background: var(--pogo-yellow); margin: 15px auto; }
+        header .line { width: 40px; height: 2px; background: var(--pogo-blue); margin: 15px auto; }
         header p { font-size: 0.9rem; color: #7F8C8D; margin: 0 0 30px 0; }
 
         .section { text-align: left; margin-bottom: 25px; }
@@ -60,12 +62,19 @@
         input[type="checkbox"]:checked { background: var(--pogo-green); border-color: var(--pogo-green); transform: scale(1.1); }
         input[type="checkbox"]:checked::after { content: "✓"; color: white; font-size: 14px; position: absolute; left: 4px; top: 0px; }
 
-        /* 圓潤星星區塊 */
-        .star-box { background: rgba(255, 255, 255, 0.6); border-radius: 25px; padding: 25px 20px; margin-bottom: 25px; border: 2px dashed #E0E0E0; }
-        .star-rating { display: flex; flex-direction: row-reverse; justify-content: center; gap: 8px; }
-        .star-rating input { display: none; }
+        .heart-box { 
+            background: rgba(255, 255, 255, 0.7); 
+            border-radius: 30px; 
+            padding: 25px 20px; 
+            margin-bottom: 25px; 
+            border: 2px solid var(--pogo-border-light); 
+            box-shadow: inset 0 2px 10px rgba(46, 185, 230, 0.05);
+        }
         
-        .star-rating label { 
+        .heart-rating { display: flex; flex-direction: row-reverse; justify-content: center; gap: 12px; }
+        .heart-rating input { display: none; }
+        
+        .heart-rating label { 
             cursor: pointer; 
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
@@ -74,39 +83,35 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        .star-icon {
-            width: 42px;
-            height: 42px;
+        .heart-icon {
+            width: 45px;
+            height: 45px;
             fill: #E0E0E0;
             stroke: #E0E0E0;
-            stroke-width: 2;
-            stroke-linejoin: round;
+            stroke-width: 1.5;
             transition: all 0.3s ease;
         }
 
-        /* 選中狀態的星星顏色 */
-        .star-rating input:checked ~ label .star-icon {
-            fill: var(--pogo-yellow);
-            stroke: var(--pogo-yellow);
-            filter: drop-shadow(0 0 8px rgba(255, 206, 0, 0.5));
+        .heart-rating input:checked ~ label .heart-icon {
+            fill: var(--pogo-red);
+            stroke: var(--pogo-red);
+            filter: drop-shadow(0 0 10px rgba(255, 56, 71, 0.4));
         }
 
-        /* 點擊時的果凍震動 */
-        .vibrate-effect { animation: jelly-shake 0.4s ease; }
-        @keyframes jelly-shake {
+        .vibrate-effect { animation: heart-beat 0.4s ease; }
+        @keyframes heart-beat {
             0% { transform: scale(1); }
-            30% { transform: scale(1.4) rotate(-10deg); }
-            50% { transform: scale(1.2) rotate(10deg); }
-            70% { transform: scale(1.3) rotate(-5deg); }
-            100% { transform: scale(1) rotate(0deg); }
+            30% { transform: scale(1.4); }
+            50% { transform: scale(1.1); }
+            70% { transform: scale(1.3); }
+            100% { transform: scale(1); }
         }
 
         .particle {
             position: absolute;
             width: 8px; height: 8px;
-            background: var(--pogo-yellow);
             pointer-events: none;
-            border-radius: 50%; /* 粒子也改成圓的 */
+            border-radius: 50%;
             z-index: 10;
         }
 
@@ -115,6 +120,7 @@
             padding: 18px; width: 100%; border-radius: 100px; 
             font-size: 1.25rem; font-weight: 800; cursor: pointer; 
             box-shadow: 0 6px 0px var(--pogo-red-dark); letter-spacing: 0.2em; 
+            transition: all 0.1s;
         }
         .btn:active { transform: translateY(4px); box-shadow: 0 2px 0px var(--pogo-red-dark); }
 
@@ -124,7 +130,7 @@
         #wisdom-area {
             margin-top: 40px; padding: 65px 25px 40px; border-radius: 35px; background: #FFFFFF;
             display: none; flex-direction: column; align-items: center; text-align: center;
-            border: 4px solid var(--pogo-red-dark); box-shadow: 10px 10px 0px var(--pogo-yellow);
+            border: 4px solid var(--pogo-blue); box-shadow: 10px 10px 0px var(--pogo-teal);
             position: relative; box-sizing: border-box; width: 100%; animation: pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
@@ -158,23 +164,23 @@
             <label class="check-item"><input type="checkbox" class="task"> 誠實面對自己，修性修心</label>
         </div>
 
-        <div class="star-box">
-            <span style="font-size: 1.1rem; font-weight: 900; color: #B8977E; display: block; margin-bottom: 12px; letter-spacing: 0.05em;">注入＿顆星星，迎接今日練陣！</span>
-            <div class="star-rating">
-                <input type="radio" id="5-stars" name="rating" value="5"><label for="5-stars" onclick="triggerFeedback(this)">
-                    <svg class="star-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <div class="heart-box">
+            <span style="font-size: 1.15rem; font-weight: 900; color: var(--pogo-blue); display: block; margin-bottom: 12px; letter-spacing: 0.05em; line-height: 1.5;">灌滿＿顆心能量<br>迎接今日練陣</span>
+            <div class="heart-rating">
+                <input type="radio" id="5-hearts" name="rating" value="5"><label for="5-hearts" onclick="triggerFeedback(this)">
+                    <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </label>
-                <input type="radio" id="4-stars" name="rating" value="4"><label for="4-stars" onclick="triggerFeedback(this)">
-                    <svg class="star-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <input type="radio" id="4-hearts" name="rating" value="4"><label for="4-hearts" onclick="triggerFeedback(this)">
+                    <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </label>
-                <input type="radio" id="3-stars" name="rating" value="3"><label for="3-stars" onclick="triggerFeedback(this)">
-                    <svg class="star-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <input type="radio" id="3-hearts" name="rating" value="3"><label for="3-hearts" onclick="triggerFeedback(this)">
+                    <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </label>
-                <input type="radio" id="2-stars" name="rating" value="2"><label for="2-stars" onclick="triggerFeedback(this)">
-                    <svg class="star-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <input type="radio" id="2-hearts" name="rating" value="2"><label for="2-hearts" onclick="triggerFeedback(this)">
+                    <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </label>
-                <input type="radio" id="1-star" name="rating" value="1"><label for="1-star" onclick="triggerFeedback(this)">
-                    <svg class="star-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <input type="radio" id="1-heart" name="rating" value="1"><label for="1-heart" onclick="triggerFeedback(this)">
+                    <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </label>
             </div>
         </div>
@@ -202,8 +208,8 @@
             <div class="battery-head"></div>
         </div>
         <div class="wisdom-header">
-            <span style="letter-spacing: 0.3em; font-weight: 900; color: var(--pogo-red-dark); font-size: 1.1rem; display: block;">今日語錄</span>
-            <div style="height: 3px; background: var(--pogo-yellow); width: 50px; margin: 15px auto;"></div>
+            <span style="letter-spacing: 0.3em; font-weight: 900; color: var(--pogo-blue); font-size: 1.1rem; display: block;">今日語錄</span>
+            <div style="height: 3px; background: var(--pogo-teal); width: 50px; margin: 15px auto;"></div>
         </div>
         <div class="wisdom-text" id="wisdom-display"></div>
         <div style="width: 100%;">
@@ -217,19 +223,15 @@
     let currentScore = 0;
 
     function triggerFeedback(el) {
-        // 1. 物理震動 (支援的手機)
-        if (navigator.vibrate) navigator.vibrate([15, 20]);
-
-        // 2. 視覺圓潤震動動畫
+        if (navigator.vibrate) navigator.vibrate([20, 50, 20]);
         el.classList.remove('vibrate-effect');
         void el.offsetWidth; 
         el.classList.add('vibrate-effect');
 
-        // 3. 圓形粒子噴發
         const box = el.getBoundingClientRect();
         const centerX = box.left + box.width / 2;
         const centerY = box.top + box.height / 2;
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 8; i++) {
             createParticle(centerX, centerY);
         }
     }
@@ -238,22 +240,17 @@
         const p = document.createElement('div');
         p.className = 'particle';
         document.body.appendChild(p);
-
+        const colors = ['#FF3847', '#FF85A1', '#FFD1DC', '#FFC1CC'];
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
         const size = Math.random() * 6 + 4;
         p.style.width = `${size}px`;
         p.style.height = `${size}px`;
-
-        const destinationX = x + (Math.random() - 0.5) * 120;
-        const destinationY = y + (Math.random() - 0.5) * 120;
-
+        const destinationX = x + (Math.random() - 0.5) * 150;
+        const destinationY = y + (Math.random() - 0.5) * 150;
         const animation = p.animate([
             { transform: `translate(${x}px, ${y}px) scale(1)`, opacity: 1 },
             { transform: `translate(${destinationX}px, ${destinationY}px) scale(0)`, opacity: 0 }
-        ], {
-            duration: 600,
-            easing: 'cubic-bezier(0.1, 0.8, 0.4, 1)'
-        });
-
+        ], { duration: 700, easing: 'cubic-bezier(0.1, 0.8, 0.4, 1)' });
         animation.onfinish = () => p.remove();
     }
 
@@ -273,7 +270,7 @@
         "鼓棒是你的手，鼓面是你的心，<br>擊出的每一聲都是力量。",
         "讓心氣響徹雲霄，<br>取決於你當下的心量。",
         "讓雜念隨揮動散去，<br>只留下純粹的共振。",
-        "節奏感不是技巧，<br>反應在你內在能量的顯化。",
+        "節奏感不是技巧，<br>反映在你內在能量的顯化。",
         "順應氣息的起伏，<br>讓鼓聲隨呼吸自然綻放。",
         "每一次的打擊，<br>是對內心恐懼的破除。",
         "心定如山，擊鼓如電，<br>在極靜中爆發最強力量。",
@@ -293,8 +290,8 @@
 
     function showAnalysis() {
         const checkedCount = document.querySelectorAll('.task:checked').length;
-        const starRating = parseInt(document.querySelector('input[name="rating"]:checked')?.value || 0);
-        currentScore = (checkedCount * 12) + (starRating * 8);
+        const rating = parseInt(document.querySelector('input[name="rating"]:checked')?.value || 0);
+        currentScore = (checkedCount * 12) + (rating * 8);
         const resultArea = document.getElementById('result-area');
         resultArea.style.display = 'block';
         document.getElementById('total-score').innerText = currentScore + '%';
