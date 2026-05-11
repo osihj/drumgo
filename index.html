@@ -32,18 +32,117 @@
             overflow-x: hidden;
         }
 
-        .pogo-container {
-            background: var(--pogo-white);
-            border-radius: 40px;
-            padding: 40px 25px;
-            max-width: 500px;
-            width: 100%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        /* --- 7秒啟動畫面 --- */
+        #loading-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, var(--pogo-blue) 0%, var(--pogo-teal) 100%);
+            display: flex; flex-direction: column; 
+            justify-content: center; align-items: center;
+            z-index: 9999; 
+            transition: opacity 0.8s ease, visibility 0.8s;
             text-align: center;
-            border-bottom: 10px solid rgba(0, 0, 0, 0.1);
-            box-sizing: border-box;
-            position: relative;
         }
+        
+        .pixel-battery {
+            width: 70px;
+            height: 120px;
+            background: var(--pogo-white);
+            position: relative;
+            box-shadow: 
+                -4px 0 0 0 var(--pogo-white), 4px 0 0 0 var(--pogo-white), 
+                0 -4px 0 0 var(--pogo-white), 0 4px 0 0 var(--pogo-white);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .pixel-battery::before {
+            content: "";
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 8px;
+            background: var(--pogo-white);
+            box-shadow: -4px 0 0 0 var(--pogo-white), 4px 0 0 0 var(--pogo-white);
+        }
+
+        .loading-battery-fill {
+            position: absolute; bottom: 4px; left: 4px; right: 4px;
+            background: var(--pogo-green); height: 0%;
+            animation: battery-charge-pixel 7s steps(15, end) forwards;
+        }
+
+        @keyframes battery-charge-pixel {
+            0% { height: 0%; background: var(--pogo-red); }
+            40% { height: 40%; background: var(--pogo-yellow); }
+            100% { height: 93%; background: var(--pogo-green); }
+        }
+
+        .loading-percent {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-top: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* --- 調整後的文字設計：藍色系列、呼吸閃爍動態 --- */
+        .loading-text-eng {
+            color: #1A5276; /* 使用更深的藍色提高清晰度 */
+            margin-top: 18px;
+            font-size: 1.15rem;
+            font-weight: 500;
+            font-style: italic;
+            letter-spacing: 0.12em;
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            position: relative;
+            left: 0.75em;
+            /* 藍色呼吸燈動畫：跟著電池能量感閃爍 */
+            animation: pogo-blue-glow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pogo-blue-glow {
+            0%, 100% { 
+                color: #1A5276; 
+                text-shadow: 0 0 0px rgba(46, 185, 230, 0);
+            }
+            50% { 
+                color: #FFFFFF; /* 閃爍時變亮 */
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(46, 185, 230, 0.6);
+            }
+        }
+
+        .dot-ani {
+            display: inline-block;
+            width: 1.5em;
+            text-align: left;
+            margin-left: 2px;
+        }
+
+        .dot-ani::after {
+            content: '';
+            animation: dots-loading 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots-loading {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+
+        .fade-out { opacity: 0; visibility: hidden; }
+
+        /* --- 主容器其餘風格保持不變 --- */
+        .pogo-container {
+            background: var(--pogo-white); border-radius: 40px; padding: 40px 25px;
+            max-width: 500px; width: 100%; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center; border-bottom: 10px solid rgba(0, 0, 0, 0.1);
+            box-sizing: border-box; position: relative; opacity: 0; transition: opacity 1s ease;
+        }
+        body.show-app .pogo-container { opacity: 1; }
 
         header h2 { font-weight: 700; font-size: 1.6rem; margin: 0; color: var(--pogo-dark); }
         header .line { width: 40px; height: 2px; background: var(--pogo-blue); margin: 15px auto; }
@@ -54,71 +153,59 @@
             display: flex; align-items: center; background: white; 
             margin-bottom: 10px; padding: 14px 16px; border-radius: 20px; 
             font-size: 1rem; box-shadow: 0 4px 0px rgba(0,0,0,0.05); cursor: pointer; 
-            transition: transform 0.1s;
         }
-        .check-item:active { transform: scale(0.98); }
 
         input[type="checkbox"] { appearance: none; width: 22px; height: 22px; border: 2px solid #BBB; border-radius: 50%; margin-right: 12px; flex-shrink: 0; position: relative; transition: 0.2s; }
-        input[type="checkbox"]:checked { background: var(--pogo-green); border-color: var(--pogo-green); transform: scale(1.1); }
+        input[type="checkbox"]:checked { background: var(--pogo-green); border-color: var(--pogo-green); }
         input[type="checkbox"]:checked::after { content: "✓"; color: white; font-size: 14px; position: absolute; left: 4px; top: 0px; }
 
         .heart-box { 
-            background: rgba(255, 255, 255, 0.7); 
-            border-radius: 30px; 
-            padding: 25px 20px; 
-            margin-bottom: 25px; 
-            border: 2px solid var(--pogo-border-light); 
-            box-shadow: inset 0 2px 10px rgba(46, 185, 230, 0.05);
+            background: rgba(255, 255, 255, 0.7); border-radius: 30px; padding: 25px 20px; 
+            margin-bottom: 25px; border: 2px solid var(--pogo-border-light); 
         }
         
         .heart-rating { display: flex; flex-direction: row-reverse; justify-content: center; gap: 12px; }
         .heart-rating input { display: none; }
-        .heart-rating label { cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
-
-        .heart-icon { width: 45px; height: 45px; fill: #E0E0E0; stroke: #E0E0E0; stroke-width: 1.5; transition: all 0.3s ease; }
-        .heart-rating input:checked ~ label .heart-icon { fill: var(--pogo-red); stroke: var(--pogo-red); filter: drop-shadow(0 0 10px rgba(255, 56, 71, 0.4)); }
-
-        .vibrate-effect { animation: heart-beat 0.4s ease; }
-        @keyframes heart-beat {
-            0% { transform: scale(1); }
-            30% { transform: scale(1.4); }
-            100% { transform: scale(1); }
-        }
-
-        .particle { position: absolute; width: 8px; height: 8px; pointer-events: none; border-radius: 50%; z-index: 10; }
+        .heart-rating label { cursor: pointer; transition: transform 0.2s; -webkit-tap-highlight-color: transparent; }
+        .heart-icon { width: 45px; height: 45px; fill: #E0E0E0; stroke: #E0E0E0; stroke-width: 1.5; }
+        .heart-rating input:checked ~ label .heart-icon { fill: var(--pogo-red); stroke: var(--pogo-red); }
 
         .btn { 
             background-color: var(--pogo-red); color: white; border: none; 
             padding: 18px; width: 100%; border-radius: 100px; 
             font-size: 1.25rem; font-weight: 800; cursor: pointer; 
             box-shadow: 0 6px 0px var(--pogo-red-dark); letter-spacing: 0.2em; 
-            transition: all 0.1s;
         }
-        .btn:active { transform: translateY(4px); box-shadow: 0 2px 0px var(--pogo-red-dark); }
 
-        #result-area { margin-top: 30px; padding: 30px 15px; border-radius: 30px; background: white; display: none; animation: pop 0.4s ease-out; border: 1px solid #eee; }
+        #result-area { margin-top: 30px; padding: 30px 15px; border-radius: 30px; background: white; display: none; }
         .score-display { font-size: 3.5rem; font-weight: 900; color: var(--pogo-red); display: block; margin-bottom: 10px; }
 
         #wisdom-area {
             margin-top: 40px; padding: 65px 25px 40px; border-radius: 35px; background: #FFFFFF;
             display: none; flex-direction: column; align-items: center; text-align: center;
             border: 4px solid var(--pogo-blue); box-shadow: 10px 10px 0px var(--pogo-teal);
-            position: relative; box-sizing: border-box; width: 100%; animation: pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; width: 100%; box-sizing: border-box;
         }
 
         .battery-container { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; z-index: 10; }
-        .battery-body { width: 90px; height: 42px; border: 4px solid var(--pogo-dark); background: white; border-radius: 10px; position: relative; padding: 4px; box-sizing: border-box; }
+        .battery-body { width: 90px; height: 42px; border: 4px solid var(--pogo-dark); background: white; border-radius: 10px; position: relative; }
         .battery-head { width: 6px; height: 16px; background: var(--pogo-dark); border-radius: 0 5px 5px 0; }
         .battery-fill { height: 100%; background: var(--pogo-green); width: 0%; border-radius: 3px; transition: width 1.2s ease-in-out; }
-        .battery-text { position: absolute; width: 100%; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 900; font-size: 0.85rem; color: var(--pogo-dark); }
+        .battery-text { position: absolute; width: 100%; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 900; font-size: 0.85rem; }
 
-        .wisdom-text { font-size: 1.3rem; font-weight: 800; line-height: 1.8; color: var(--pogo-dark); margin: 25px 0; width: 100%; padding: 0 15px; box-sizing: border-box; text-wrap: balance; word-break: break-all; }
-        .date-display { margin-top: 15px; font-size: 0.85rem; font-weight: 600; color: var(--pogo-text-light); }
-
-        @keyframes pop { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .wisdom-text { font-size: 1.3rem; font-weight: 800; line-height: 1.8; color: var(--pogo-dark); margin: 25px 0; }
+        .date-display { margin-top: 15px; font-size: 0.85rem; color: var(--pogo-text-light); }
     </style>
 </head>
 <body>
+
+<div id="loading-screen">
+    <div class="pixel-battery">
+        <div class="loading-battery-fill"></div>
+    </div>
+    <div class="loading-percent" id="loading-count">0%</div>
+    <div class="loading-text-eng">ENERGY LOADING<span class="dot-ani"></span></div>
+</div>
 
 <div class="pogo-container">
     <div id="main-ritual">
@@ -137,21 +224,21 @@
         </div>
 
         <div class="heart-box">
-            <span style="font-size: 1.15rem; font-weight: 900; color: var(--pogo-blue); display: block; margin-bottom: 12px; letter-spacing: 0.05em; line-height: 1.5;">灌滿＿顆心能量<br>迎接今日練陣</span>
+            <span style="font-size: 1.15rem; font-weight: 900; color: var(--pogo-blue); display: block; margin-bottom: 12px;">灌滿＿顆心能量<br>迎接今日練陣</span>
             <div class="heart-rating">
-                <input type="radio" id="h5" name="rating" value="5"><label for="h5" onclick="triggerFeedback(this)">
+                <input type="radio" id="h5" name="rating" value="5"><label for="h5">
                     <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </label>
-                <input type="radio" id="h4" name="rating" value="4"><label for="h4" onclick="triggerFeedback(this)">
+                <input type="radio" id="h4" name="rating" value="4"><label for="h4">
                     <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </label>
-                <input type="radio" id="h3" name="rating" value="3"><label for="h3" onclick="triggerFeedback(this)">
+                <input type="radio" id="h3" name="rating" value="3"><label for="h3">
                     <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </label>
-                <input type="radio" id="h2" name="rating" value="2"><label for="h2" onclick="triggerFeedback(this)">
+                <input type="radio" id="h2" name="rating" value="2"><label for="h2">
                     <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </label>
-                <input type="radio" id="h1" name="rating" value="1"><label for="h1" onclick="triggerFeedback(this)">
+                <input type="radio" id="h1" name="rating" value="1"><label for="h1">
                     <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </label>
             </div>
@@ -191,37 +278,24 @@
 </div>
 
 <script>
+    window.addEventListener('load', () => {
+        const countEl = document.getElementById('loading-count');
+        let count = 0;
+        const interval = setInterval(() => {
+            count++;
+            countEl.innerText = count + "%";
+            if (count >= 100) clearInterval(interval);
+        }, 65);
+
+        setTimeout(() => {
+            const ls = document.getElementById('loading-screen');
+            ls.classList.add('fade-out');
+            document.body.classList.add('show-app');
+            setTimeout(() => { ls.style.display = 'none'; }, 800);
+        }, 7000);
+    });
+
     let currentScore = 0;
-
-    function triggerFeedback(el) {
-        if (navigator.vibrate) navigator.vibrate([20, 50, 20]);
-        el.classList.remove('vibrate-effect');
-        void el.offsetWidth; 
-        el.classList.add('vibrate-effect');
-
-        const box = el.getBoundingClientRect();
-        const centerX = box.left + box.width / 2;
-        const centerY = box.top + box.height / 2;
-        for (let i = 0; i < 8; i++) { createParticle(centerX, centerY); }
-    }
-
-    function createParticle(x, y) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        document.body.appendChild(p);
-        const colors = ['#FF3847', '#FF85A1', '#FFCE00', '#2EB9E6'];
-        p.style.background = colors[Math.floor(Math.random() * colors.length)];
-        const size = Math.random() * 6 + 4;
-        p.style.width = `${size}px`; p.style.height = `${size}px`;
-        const destinationX = x + (Math.random() - 0.5) * 150;
-        const destinationY = y + (Math.random() - 0.5) * 150;
-        const animation = p.animate([
-            { transform: `translate(${x}px, ${y}px) scale(1)`, opacity: 1 },
-            { transform: `translate(${destinationX}px, ${destinationY}px) scale(0)`, opacity: 0 }
-        ], { duration: 700, easing: 'cubic-bezier(0.1, 0.8, 0.4, 1)' });
-        animation.onfinish = () => p.remove();
-    }
-
     const wisdomQuotes = [
         "鼓聲不僅是節奏，<br>更是你靈魂的跳動。",
         "心是鼓的核心，<br>心定則聲正，心靜則氣長。",
@@ -234,28 +308,19 @@
     function showAnalysis() {
         const checkedCount = document.querySelectorAll('.task:checked').length;
         const rating = parseInt(document.querySelector('input[name="rating"]:checked')?.value || 0);
-        
-        // 新邏輯：(勾選數 * 10) + (星星數 * 10)
-        currentScore = (checkedCount * 10) + (rating * 10);
+        const ratingScore = rating * 13;
+        const checkScore = checkedCount * 7;
+        currentScore = checkScore + ratingScore;
         
         const resultArea = document.getElementById('result-area');
         resultArea.style.display = 'block';
         document.getElementById('total-score').innerText = currentScore + '%';
         
         let title, desc;
-        if (currentScore >= 90) { 
-            title = "滿格狀態！"; 
-            desc = "今日已準備就緒<br>維持能量繼續前行！"; 
-        } else if (currentScore >= 70) { 
-            title = "能量充沛"; 
-            desc = "內心平定，專注力飽滿，<br>讓力量在鼓棒間流動。"; 
-        } else if (currentScore >= 50) { 
-            title = "正在充電"; 
-            desc = "心境尚在調和，<br>請透過幾次深呼吸找回節奏。"; 
-        } else { 
-            title = "電量過低"; 
-            desc = "目前狀態較為浮躁!!!<br>建議靜心五分鐘後再開始。"; 
-        }
+        if (currentScore >= 90) { title = "滿格狀態！"; desc = "今日已準備就緒<br>維持能量繼續前行！"; }
+        else if (currentScore >= 80) { title = "正在充電"; desc = "心境尚在調和，<br>請透過幾次深呼吸找回節奏。"; }
+        else if (currentScore >= 50) { title = "電量不穩"; desc = "情緒起伏不定，<br>請試著放下雜念，重新校準呼吸。"; }
+        else { title = "電量過低"; desc = "目前狀態較為浮躁!!!<br>建議靜心五分鐘後再開始。"; }
         
         document.getElementById('fb-title').innerText = title;
         document.getElementById('fb-desc').innerHTML = desc;
@@ -272,8 +337,8 @@
         const fill = document.getElementById('battery-fill');
         document.getElementById('battery-text').innerText = currentScore + '%';
         
-        if(currentScore < 35) fill.style.background = 'var(--pogo-red)';
-        else if(currentScore < 75) fill.style.background = 'var(--pogo-yellow)';
+        if(currentScore < 50) fill.style.background = 'var(--pogo-red)';
+        else if(currentScore < 80) fill.style.background = 'var(--pogo-yellow)';
         else fill.style.background = 'var(--pogo-green)';
         
         const now = new Date();
