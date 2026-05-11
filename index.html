@@ -1,67 +1,304 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="zh-Hant">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2299.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>練陣前身心儀式</title>
+    <style>
+        :root {
+            --pogo-blue: #2EB9E6;
+            --pogo-teal: #42F5E6;
+            --pogo-green: #38D3A0;
+            --pogo-red: #FF3847;
+            --pogo-red-dark: #C62828;
+            --pogo-dark: #2C3E50;
+            --pogo-white: rgba(255, 255, 255, 0.9);
+            --pogo-yellow: #FFCE00;
+        }
+
+        body {
+            font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+            background: linear-gradient(180deg, var(--pogo-blue) 0%, var(--pogo-teal) 100%);
+            color: var(--pogo-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 15px;
+            letter-spacing: 0.02em;
+        }
+
+        .pogo-container {
+            background: var(--pogo-white);
+            border-radius: 40px;
+            padding: 45px 25px;
+            max-width: 460px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            border-bottom: 10px solid rgba(0, 0, 0, 0.08);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        header h2 {
+            font-weight: 600;
+            font-size: 1.7rem;
+            margin: 0;
+            color: var(--pogo-dark);
+        }
+
+        header .line {
+            width: 40px;
+            height: 1px;
+            background: #B8977E;
+            margin: 15px auto;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            color: #7F8C8D;
+            margin: 0;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            background: white;
+            margin-bottom: 15px;
+            padding: 18px 20px;
+            border-radius: 25px;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.05);
+        }
+
+        .check-item:active { transform: scale(0.97); }
+
+        input[type="checkbox"] {
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border: 2px solid #BBB;
+            border-radius: 50%;
+            margin-right: 15px;
+            margin-top: 6px;
+            position: relative;
+            flex-shrink: 0;
+            background: white;
+        }
+
+        input[type="checkbox"]:checked {
+            background: var(--pogo-green);
+            border-color: var(--pogo-green);
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: "✓";
+            color: white;
+            font-size: 14px;
+            position: absolute;
+            left: 4px;
+            top: 0px;
+        }
+
+        .star-box {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 30px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .status-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #B8977E;
+            margin-bottom: 10px;
+            display: block;
+            text-align: center;
+        }
+
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .star-rating input { display: none; }
+        .star-rating label {
+            font-size: 36px;
+            color: #E8E8E8;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .star-rating input:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: var(--pogo-yellow);
+        }
+
+        .btn {
+            background-color: var(--pogo-red);
+            color: white;
+            border: none;
+            padding: 20px;
+            width: 90%;
+            border-radius: 100px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 0px var(--pogo-red-dark);
+            transition: 0.1s;
+            letter-spacing: 0.2em;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .btn:active {
+            box-shadow: 0 2px 0px var(--pogo-red-dark);
+            transform: translateY(4px);
+        }
+
+        #result-area {
+            margin-top: 40px;
+            padding: 30px 20px;
+            border-radius: 35px;
+            background: white;
+            display: none;
+            text-align: center;
+            animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.6); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .score-label { 
+            font-size: 0.95rem; 
+            color: #7F8C8D; 
+            margin-bottom: 8px; 
+            font-weight: bold;
+            display: block;
+        }
+
+        .score-display { 
+            font-size: 4rem; 
+            font-weight: 800; 
+            color: var(--pogo-red); 
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .feedback-title {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--pogo-dark);
+        }
+
+        .feedback-desc {
+            display: block;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #5D6D7E;
+            padding: 0 10px;
+        }
+    </style>
 </head>
 <body>
-<p class="p1">import { useMemo } from "react";</p>
-<p class="p1">import AppHeader from "@/components/AppHeader";</p>
-<p class="p1">import GreetingCard from "@/components/GreetingCard";</p>
-<p class="p1">import WeeklySummary from "@/components/WeeklySummary";</p>
-<p class="p1">import HabitTracker from "@/components/HabitTracker";</p>
-<p class="p1">import CheckInButton from "@/components/CheckInButton";</p>
-<p class="p1">import BottomNav from "@/components/BottomNav";</p>
-<p class="p1">import { toast } from "sonner";</p>
-<p class="p2"><br></p>
-<p class="p1">const getWeekDays = () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const today = new Date();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const dayOfWeek = today.getDay();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const monday = new Date(today);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>monday.setDate(today.getDate() - ((dayOfWeek + 6) % 7));</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>return Array.from({ length: 7 }, (_, i) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const d = new Date(monday);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>d.setDate(monday.getDate() + i);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>date: d.getDate(),</p>
-<p class="p1"><span class="Apple-converted-space">      </span>completed: false,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>isToday: d.toDateString() === today.toDateString(),</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p1">};</p>
-<p class="p2"><br></p>
-<p class="p1">const Index = () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const weekDays = useMemo(() =&gt; getWeekDays(), []);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const handleCheckIn = () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>toast.success("打卡成功！繼續保持 💪");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>return (</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div className="max-w-md mx-auto min-h-screen bg-background relative flex flex-col"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;AppHeader /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;main className="flex-1 p-4 pb-32"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div className="flex flex-col space-y-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;GreetingCard name="自律君" weeklyCheckins={0} rank="加油！動起來" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;WeeklySummary totalMinutes={0} /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;HabitTracker title="練功" count={0} days={weekDays} /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;HabitTracker title="五分鐘" count={0} days={weekDays} /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>&lt;CheckInButton onClick={handleCheckIn} /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/main&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;BottomNav /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>);</p>
-<p class="p1">};</p>
-<p class="p2"><br></p>
-<p class="p1">export default Index;</p>
+
+<div class="pogo-container">
+    <header>
+        <h2>練陣前身心儀式</h2>
+        <div class="line"></div>
+        <p>每一場震撼的鼓聲，始於內心的平靜</p>
+    </header>
+
+    <div class="section">
+        <label class="check-item"><input type="checkbox" class="task"> 已整理好情緒，不將私人情緒帶入練陣期間</label>
+        <label class="check-item"><input type="checkbox" class="task"> 具備守護團隊氣氛的自覺，互相鼓勵取代埋怨</label>
+        <label class="check-item"><input type="checkbox" class="task"> 保持專注，接受任何變化與調整</label>
+        <label class="check-item"><input type="checkbox" class="task"> 對自己有信心、耐心、恆心</label>
+        <label class="check-item"><input type="checkbox" class="task"> 接受任何動作調整，誠實面對自己</label>
+    </div>
+
+    <div class="star-box">
+        <span class="status-label">準備好幾顆星面對今日</span>
+        <div class="star-rating">
+            <input type="radio" id="5-stars" name="rating" value="5"><label for="5-stars">★</label>
+            <input type="radio" id="4-stars" name="rating" value="4"><label for="4-stars">★</label>
+            <input type="radio" id="3-stars" name="rating" value="3"><label for="3-stars">★</label>
+            <input type="radio" id="2-stars" name="rating" value="2"><label for="2-stars">★</label>
+            <input type="radio" id="1-star" name="rating" value="1"><label for="1-star">★</label>
+        </div>
+    </div>
+
+    <button class="btn" onclick="showAnalysis()">擊鼓開始</button>
+
+    <div id="result-area">
+        <span class="score-label">今日身心備戰狀態</span>
+        <span class="score-display" id="total-score">0%</span>
+        <div id="feedback-content"></div>
+    </div>
+</div>
+
+<script>
+    function showAnalysis() {
+        const checks = document.querySelectorAll('.task:checked').length;
+        const checkScore = checks * 12;
+
+        const starRating = document.querySelector('input[name="rating"]:checked')?.value || 0;
+        const starScore = starRating * 8;
+
+        const finalScore = checkScore + starScore;
+
+        const resultArea = document.getElementById('result-area');
+        const scoreDisplay = document.getElementById('total-score');
+        const feedbackContent = document.getElementById('feedback-content');
+
+        resultArea.style.display = 'block';
+        scoreDisplay.innerText = finalScore + '%';
+
+        let title = "";
+        let desc = "";
+
+        if (finalScore === 100) {
+            title = "巔峰狀態！";
+            desc = "身心已完全合一。今日的每一聲鼓響，都將震撼靈魂。";
+        } else if (finalScore >= 80) {
+            title = "最良狀態。";
+            desc = "內心平定，專注力飽滿。讓力量在鼓棒間流動。";
+        } else if (finalScore >= 50) {
+            title = "穩定進步。";
+            desc = "心境尚在調和。請先透過幾次深呼吸，找回身體與節奏的連結。";
+        } else {
+            title = "需要調適。";
+            desc = "今日雜訊較多。建議先放慢速度，專注於呼吸，重新校準自己的心境。";
+        }
+
+        feedbackContent.innerHTML = `<span class="feedback-title">${title}</span><span class="feedback-desc">${desc}</span>`;
+        
+        setTimeout(() => {
+            resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+    }
+</script>
+
 </body>
 </html>
