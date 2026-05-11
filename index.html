@@ -34,7 +34,7 @@
             background: var(--pogo-white);
             border-radius: 40px;
             padding: 40px 20px;
-            max-width: 500px; /* 增加寬度以符合版面伸展 */
+            max-width: 500px;
             width: 100%;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             text-align: center;
@@ -72,10 +72,9 @@
         }
         .score-display { font-size: 3.5rem; font-weight: 800; color: var(--pogo-red); display: block; margin-bottom: 10px; }
         
-        /* 語錄卡片區域 */
         #wisdom-area {
             margin-top: 50px;
-            padding: 45px 20px 30px; /* 適度調整內距 */
+            padding: 45px 35px 30px;
             border-radius: 35px;
             background: #FFFFFF;
             display: none;
@@ -92,19 +91,19 @@
         .battery-fill { height: 100%; background: var(--pogo-green); width: 0%; border-radius: 2px; transition: width 1s ease-out; }
         .battery-text { position: absolute; width: 100%; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 900; font-size: 0.95rem; color: var(--pogo-dark); text-shadow: 1px 1px 0px white; }
 
-        /* 字體調整為 16pt (約 1.35rem) */
         .wisdom-text { 
             font-size: 1.35rem; 
             font-weight: 800; 
             line-height: 1.8; 
             color: var(--pogo-dark); 
-            margin: 25px 0; 
-            min-height: 90px; 
+            margin: 25px auto; 
+            min-height: 100px; 
             display: flex; 
             align-items: center; 
             justify-content: center;
             text-align: center;
             width: 100%;
+            text-wrap: balance; 
         }
         
         .date-display { 
@@ -155,13 +154,12 @@
             <span id="total-score" class="score-display">0%</span>
             <div id="feedback-content">
                 <span class="feedback-title" id="fb-title" style="font-size: 1.4rem; font-weight: 800; display: block; margin-bottom: 10px;"></span>
-                <span class="feedback-desc" id="fb-desc" style="font-size: 1.05rem; color: #5D6D7E; line-height: 1.6; display: block; max-width: 90%; margin: 0 auto;"></span>
+                <span class="feedback-desc" id="fb-desc" style="font-size: 1.05rem; color: #5D6D7E; line-height: 1.8; display: block; max-width: 95%; margin: 0 auto; text-align: center;"></span>
             </div>
             <button class="btn" style="margin-top: 25px; background: linear-gradient(90deg, #42F5E6, #2EB9E6); box-shadow: 0 4px 0px #2598bd;" onclick="drawWisdom()">領取今日語錄</button>
         </div>
     </div>
 
-    <!-- 語錄顯示區 -->
     <div id="wisdom-area">
         <div class="battery-container">
             <div class="battery-body">
@@ -187,8 +185,8 @@
     let currentScore = 0;
 
     const wisdomQuotes = [
-        "鼓聲不僅是節奏，<br>更是你靈魂的跳動。",
-        "心是鼓的核心，<br>心定則聲正，心靜則氣長。",
+        "鼓聲不僅是節奏，更是你靈魂的跳動。",
+        "心是鼓的核心，心定則聲正，心靜則氣長。",
         "真正的強大，是在混亂中依然保有節奏。",
         "每一擊都是新的開始，不糾結於上一聲的失誤。",
         "專注於當下這一響，聲音自然會傳達到遠方。",
@@ -229,13 +227,25 @@
         document.getElementById('total-score').innerText = currentScore + '%';
 
         let title, desc;
-        if (currentScore >= 90) { title = "滿格狀態！"; desc = "今日已準備就緒，請維持能量繼續前行！"; }
-        else if (currentScore >= 70) { title = "能量充沛"; desc = "內心平定，專注力飽滿。讓力量在鼓棒間流動。"; }
-        else if (currentScore >= 50) { title = "正在充電"; desc = "心境尚在調和。請透過幾次深呼吸，找回節奏。"; }
-        else { title = "電量過低"; desc = "目前狀態較為浮躁。建議靜心五分鐘，排除雜念後再開始。"; }
+        if (currentScore >= 90) { 
+            title = "滿格狀態！"; 
+            desc = "今日已準備就緒，<br>請維持能量繼續前行！"; 
+        }
+        else if (currentScore >= 70) { 
+            title = "能量充沛"; 
+            desc = "內心平定，專注力飽滿，<br>讓力量在鼓棒間流動。"; 
+        }
+        else if (currentScore >= 50) { 
+            title = "正在充電"; 
+            desc = "心境尚在調和，<br>請透過幾次深呼吸，找回節奏。"; 
+        }
+        else { 
+            title = "電量過低"; 
+            desc = "目前狀態較為浮躁。<br>建議靜心五分鐘，排除雜念後再開始。"; 
+        }
 
         document.getElementById('fb-title').innerText = title;
-        document.getElementById('fb-desc').innerText = desc;
+        document.getElementById('fb-desc').innerHTML = desc; // 使用 innerHTML 讓 <br> 生效
 
         setTimeout(() => {
             document.getElementById('result-area').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
