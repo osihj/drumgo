@@ -72,6 +72,7 @@
         }
         .score-display { font-size: 3.5rem; font-weight: 800; color: var(--pogo-red); display: block; margin-bottom: 10px; }
         
+        /* 語錄卡片區域 */
         #wisdom-area {
             margin-top: 50px;
             padding: 45px 35px 30px;
@@ -91,19 +92,23 @@
         .battery-fill { height: 100%; background: var(--pogo-green); width: 0%; border-radius: 2px; transition: width 1s ease-out; }
         .battery-text { position: absolute; width: 100%; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 900; font-size: 0.95rem; color: var(--pogo-dark); text-shadow: 1px 1px 0px white; }
 
+        /* 語錄文字對齊優化 */
         .wisdom-text { 
-            font-size: 1.35rem; 
+            font-size: 1.35rem; /* 16pt */
             font-weight: 800; 
             line-height: 1.8; 
             color: var(--pogo-dark); 
             margin: 25px auto; 
             min-height: 100px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            text-align: center;
+            
+            /* 居中對齊設定 */
+            display: block; /* 改回 block 配合 text-align */
+            text-align: center !important; 
             width: 100%;
+            
+            /* 換行平衡與避開孤字 */
             text-wrap: balance; 
+            word-break: keep-all; /* 防止單個中文字被拆散 */
         }
         
         .date-display { 
@@ -160,6 +165,7 @@
         </div>
     </div>
 
+    <!-- 語錄顯示區 -->
     <div id="wisdom-area">
         <div class="battery-container">
             <div class="battery-body">
@@ -245,7 +251,7 @@
         }
 
         document.getElementById('fb-title').innerText = title;
-        document.getElementById('fb-desc').innerHTML = desc; // 使用 innerHTML 讓 <br> 生效
+        document.getElementById('fb-desc').innerHTML = desc;
 
         setTimeout(() => {
             document.getElementById('result-area').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -254,7 +260,8 @@
 
     function drawWisdom() {
         const randomIndex = Math.floor(Math.random() * wisdomQuotes.length);
-        document.getElementById('wisdom-display').innerHTML = `<span>${wisdomQuotes[randomIndex]}</span>`;
+        // 使用 innerHTML 確保文字與對齊基準一致
+        document.getElementById('wisdom-display').innerHTML = wisdomQuotes[randomIndex];
         
         const fill = document.getElementById('battery-fill');
         const txt = document.getElementById('battery-text');
