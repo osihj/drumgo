@@ -27,7 +27,7 @@
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
-            scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
         .pogo-container {
@@ -52,21 +52,68 @@
             display: flex; align-items: center; background: white; 
             margin-bottom: 10px; padding: 14px 16px; border-radius: 20px; 
             font-size: 1rem; box-shadow: 0 4px 0px rgba(0,0,0,0.05); cursor: pointer; 
+            transition: transform 0.1s;
         }
-        input[type="checkbox"] { appearance: none; width: 20px; height: 20px; border: 2px solid #BBB; border-radius: 50%; margin-right: 12px; flex-shrink: 0; position: relative; }
-        input[type="checkbox"]:checked { background: var(--pogo-green); border-color: var(--pogo-green); }
-        input[type="checkbox"]:checked::after { content: "✓"; color: white; font-size: 12px; position: absolute; left: 4px; top: 0px; }
+        .check-item:active { transform: scale(0.98); }
 
-        .star-box { background: rgba(255, 255, 255, 0.5); border-radius: 25px; padding: 20px; margin-bottom: 25px; }
+        input[type="checkbox"] { appearance: none; width: 22px; height: 22px; border: 2px solid #BBB; border-radius: 50%; margin-right: 12px; flex-shrink: 0; position: relative; transition: 0.2s; }
+        input[type="checkbox"]:checked { background: var(--pogo-green); border-color: var(--pogo-green); transform: scale(1.1); }
+        input[type="checkbox"]:checked::after { content: "✓"; color: white; font-size: 14px; position: absolute; left: 4px; top: 0px; }
+
+        /* 圓潤星星區塊 */
+        .star-box { background: rgba(255, 255, 255, 0.6); border-radius: 25px; padding: 25px 20px; margin-bottom: 25px; border: 2px dashed #E0E0E0; }
         .star-rating { display: flex; flex-direction: row-reverse; justify-content: center; gap: 8px; }
         .star-rating input { display: none; }
-        .star-rating label { font-size: 32px; color: #E8E8E8; cursor: pointer; }
-        .star-rating input:checked ~ label { color: var(--pogo-yellow); }
+        
+        .star-rating label { 
+            cursor: pointer; 
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .star-icon {
+            width: 42px;
+            height: 42px;
+            fill: #E0E0E0;
+            stroke: #E0E0E0;
+            stroke-width: 2;
+            stroke-linejoin: round;
+            transition: all 0.3s ease;
+        }
+
+        /* 選中狀態的星星顏色 */
+        .star-rating input:checked ~ label .star-icon {
+            fill: var(--pogo-yellow);
+            stroke: var(--pogo-yellow);
+            filter: drop-shadow(0 0 8px rgba(255, 206, 0, 0.5));
+        }
+
+        /* 點擊時的果凍震動 */
+        .vibrate-effect { animation: jelly-shake 0.4s ease; }
+        @keyframes jelly-shake {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.4) rotate(-10deg); }
+            50% { transform: scale(1.2) rotate(10deg); }
+            70% { transform: scale(1.3) rotate(-5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .particle {
+            position: absolute;
+            width: 8px; height: 8px;
+            background: var(--pogo-yellow);
+            pointer-events: none;
+            border-radius: 50%; /* 粒子也改成圓的 */
+            z-index: 10;
+        }
 
         .btn { 
             background-color: var(--pogo-red); color: white; border: none; 
             padding: 18px; width: 100%; border-radius: 100px; 
-            font-size: 1.2rem; font-weight: 700; cursor: pointer; 
+            font-size: 1.25rem; font-weight: 800; cursor: pointer; 
             box-shadow: 0 6px 0px var(--pogo-red-dark); letter-spacing: 0.2em; 
         }
         .btn:active { transform: translateY(4px); box-shadow: 0 2px 0px var(--pogo-red-dark); }
@@ -75,20 +122,10 @@
         .score-display { font-size: 3.5rem; font-weight: 900; color: var(--pogo-red); display: block; margin-bottom: 10px; }
 
         #wisdom-area {
-            margin-top: 40px;
-            padding: 65px 25px 40px;
-            border-radius: 35px;
-            background: #FFFFFF;
-            display: none; 
-            flex-direction: column;
-            align-items: center; 
-            text-align: center;
-            border: 4px solid var(--pogo-red-dark);
-            box-shadow: 10px 10px 0px var(--pogo-yellow);
-            position: relative;
-            box-sizing: border-box;
-            width: 100%;
-            animation: pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 40px; padding: 65px 25px 40px; border-radius: 35px; background: #FFFFFF;
+            display: none; flex-direction: column; align-items: center; text-align: center;
+            border: 4px solid var(--pogo-red-dark); box-shadow: 10px 10px 0px var(--pogo-yellow);
+            position: relative; box-sizing: border-box; width: 100%; animation: pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .battery-container { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; z-index: 10; }
@@ -97,19 +134,7 @@
         .battery-fill { height: 100%; background: var(--pogo-green); width: 0%; border-radius: 3px; transition: width 1.2s ease-in-out; }
         .battery-text { position: absolute; width: 100%; text-align: center; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 900; font-size: 0.85rem; color: var(--pogo-dark); }
 
-        .wisdom-text { 
-            font-size: 1.3rem; 
-            font-weight: 800; 
-            line-height: 1.8; 
-            color: var(--pogo-dark); 
-            margin: 25px 0;
-            width: 100%;
-            padding: 0 15px;
-            box-sizing: border-box;
-            text-wrap: balance; 
-            word-break: break-all;
-        }
-
+        .wisdom-text { font-size: 1.3rem; font-weight: 800; line-height: 1.8; color: var(--pogo-dark); margin: 25px 0; width: 100%; padding: 0 15px; box-sizing: border-box; text-wrap: balance; word-break: break-all; }
         .date-display { margin-top: 15px; font-size: 0.85rem; font-weight: 600; color: var(--pogo-text-light); }
 
         @keyframes pop { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
@@ -126,21 +151,31 @@
         </header>
 
         <div class="section">
-            <label class="check-item"><input type="checkbox" class="task"> 已整理情緒，不將私事帶入練陣</label>
-            <label class="check-item"><input type="checkbox" class="task"> 守護團隊氣氛，鼓勵取代埋怨</label>
-            <label class="check-item"><input type="checkbox" class="task"> 保持專注，接受任何變化與調整</label>
+            <label class="check-item"><input type="checkbox" class="task"> 已整理好情緒，今日全神貫注</label>
+            <label class="check-item"><input type="checkbox" class="task"> 守護團隊氣氛，互相鼓勵指證</label>
+            <label class="check-item"><input type="checkbox" class="task"> 歡喜自願接受任何變化與調整</label>
             <label class="check-item"><input type="checkbox" class="task"> 對自己有信心、耐心、恆心</label>
-            <label class="check-item"><input type="checkbox" class="task"> 接受動作調整，誠實面對自己</label>
+            <label class="check-item"><input type="checkbox" class="task"> 誠實面對自己，修性修心</label>
         </div>
 
         <div class="star-box">
-            <span style="font-size: 0.9rem; font-weight: 600; color: #B8977E; display: block; margin-bottom: 10px;">準備好幾顆星面對今日</span>
+            <span style="font-size: 1.1rem; font-weight: 900; color: #B8977E; display: block; margin-bottom: 12px; letter-spacing: 0.05em;">注入＿顆星星，迎接今日練陣！</span>
             <div class="star-rating">
-                <input type="radio" id="5-stars" name="rating" value="5"><label for="5-stars">★</label>
-                <input type="radio" id="4-stars" name="rating" value="4"><label for="4-stars">★</label>
-                <input type="radio" id="3-stars" name="rating" value="3"><label for="3-stars">★</label>
-                <input type="radio" id="2-stars" name="rating" value="2"><label for="2-stars">★</label>
-                <input type="radio" id="1-star" name="rating" value="1"><label for="1-star">★</label>
+                <input type="radio" id="5-stars" name="rating" value="5"><label for="5-stars" onclick="triggerFeedback(this)">
+                    <svg class="star-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </label>
+                <input type="radio" id="4-stars" name="rating" value="4"><label for="4-stars" onclick="triggerFeedback(this)">
+                    <svg class="star-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </label>
+                <input type="radio" id="3-stars" name="rating" value="3"><label for="3-stars" onclick="triggerFeedback(this)">
+                    <svg class="star-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </label>
+                <input type="radio" id="2-stars" name="rating" value="2"><label for="2-stars" onclick="triggerFeedback(this)">
+                    <svg class="star-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </label>
+                <input type="radio" id="1-star" name="rating" value="1"><label for="1-star" onclick="triggerFeedback(this)">
+                    <svg class="star-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </label>
             </div>
         </div>
 
@@ -157,6 +192,7 @@
         </div>
     </div>
 
+    <!-- 語錄區域 -->
     <div id="wisdom-area">
         <div class="battery-container">
             <div class="battery-body">
@@ -165,14 +201,11 @@
             </div>
             <div class="battery-head"></div>
         </div>
-
         <div class="wisdom-header">
             <span style="letter-spacing: 0.3em; font-weight: 900; color: var(--pogo-red-dark); font-size: 1.1rem; display: block;">今日語錄</span>
             <div style="height: 3px; background: var(--pogo-yellow); width: 50px; margin: 15px auto;"></div>
         </div>
-        
         <div class="wisdom-text" id="wisdom-display"></div>
-        
         <div style="width: 100%;">
             <p style="font-size: 0.8rem; color: #B0BEC5; font-style: italic; margin-bottom: 2px;">讓這份智慧與你的節奏同行</p>
             <div class="date-display" id="date-display"></div>
@@ -182,6 +215,47 @@
 
 <script>
     let currentScore = 0;
+
+    function triggerFeedback(el) {
+        // 1. 物理震動 (支援的手機)
+        if (navigator.vibrate) navigator.vibrate([15, 20]);
+
+        // 2. 視覺圓潤震動動畫
+        el.classList.remove('vibrate-effect');
+        void el.offsetWidth; 
+        el.classList.add('vibrate-effect');
+
+        // 3. 圓形粒子噴發
+        const box = el.getBoundingClientRect();
+        const centerX = box.left + box.width / 2;
+        const centerY = box.top + box.height / 2;
+        for (let i = 0; i < 6; i++) {
+            createParticle(centerX, centerY);
+        }
+    }
+
+    function createParticle(x, y) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        document.body.appendChild(p);
+
+        const size = Math.random() * 6 + 4;
+        p.style.width = `${size}px`;
+        p.style.height = `${size}px`;
+
+        const destinationX = x + (Math.random() - 0.5) * 120;
+        const destinationY = y + (Math.random() - 0.5) * 120;
+
+        const animation = p.animate([
+            { transform: `translate(${x}px, ${y}px) scale(1)`, opacity: 1 },
+            { transform: `translate(${destinationX}px, ${destinationY}px) scale(0)`, opacity: 0 }
+        ], {
+            duration: 600,
+            easing: 'cubic-bezier(0.1, 0.8, 0.4, 1)'
+        });
+
+        animation.onfinish = () => p.remove();
+    }
 
     const wisdomQuotes = [
         "鼓聲不僅是節奏，<br>更是你靈魂的跳動。",
@@ -199,7 +273,7 @@
         "鼓棒是你的手，鼓面是你的心，<br>擊出的每一聲都是力量。",
         "讓心氣響徹雲霄，<br>取決於你當下的心量。",
         "讓雜念隨揮動散去，<br>只留下純粹的共振。",
-        "節奏感不是技巧，<br>而是你內在能量的顯化。",
+        "節奏感不是技巧，<br>反應在你內在能量的顯化。",
         "順應氣息的起伏，<br>讓鼓聲隨呼吸自然綻放。",
         "每一次的打擊，<br>是對內心恐懼的破除。",
         "心定如山，擊鼓如電，<br>在極靜中爆發最強力量。",
@@ -208,7 +282,7 @@
         "身體的柔軟，<br>是為了支撐更剛強的力量。",
         "每一次擊響，<br>是在喚醒生命深處的勇氣。",
         "每一次練陣，<br>是身與心的重新對齊。",
-        "快而不亂，慢而不斷，<br>在起落之間掌握節奏。",
+        "快而不亂，專心而不斷，<br>在起落之間掌握節奏。",
         "放下自我的節拍，<br>在共鳴中與夥伴合而為一。",
         "每一次揮棒的弧度，<br>都畫出了心靈的輪廓。",
         "不為表演而打，<br>為誠實地面對自己而打。",
@@ -218,38 +292,19 @@
     ];
 
     function showAnalysis() {
-        // 原本的百分比計算邏輯
         const checkedCount = document.querySelectorAll('.task:checked').length;
         const starRating = parseInt(document.querySelector('input[name="rating"]:checked')?.value || 0);
         currentScore = (checkedCount * 12) + (starRating * 8);
-
         const resultArea = document.getElementById('result-area');
         resultArea.style.display = 'block';
         document.getElementById('total-score').innerText = currentScore + '%';
-
-        // --- 您指定的百分比邏輯更新 ---
         let title, desc;
-        if (currentScore >= 90) { 
-            title = "滿格狀態！"; 
-            desc = "今日已準備就緒，維持能量繼續前行！"; 
-        }
-        else if (currentScore >= 70) { 
-            title = "能量充沛"; 
-            desc = "內心平定，專注力飽滿，讓力量在鼓棒間流動。"; 
-        }
-        else if (currentScore >= 50) { 
-            title = "正在充電"; 
-            desc = "心境尚在調和，請透過幾次深呼吸找回節奏。"; 
-        }
-        else { 
-            title = "電量過低"; 
-            desc = "目前狀態較為浮躁。建議靜心五分鐘後再開始。"; 
-        }
-
+        if (currentScore >= 90) { title = "滿格狀態！"; desc = "今日已準備就緒，維持能量繼續前行！"; }
+        else if (currentScore >= 70) { title = "能量充沛"; desc = "內心平定，專注力飽滿，讓力量在鼓棒間流動。"; }
+        else if (currentScore >= 50) { title = "正在充電"; desc = "心境尚在調和，請透過幾次深呼吸找回節奏。"; }
+        else { title = "電量過低"; desc = "目前狀態較為浮躁。建議靜心五分鐘後再開始。"; }
         document.getElementById('fb-title').innerText = title;
         document.getElementById('fb-desc').innerHTML = desc;
-
-        // 手機自動下滑導引
         setTimeout(() => {
             const offset = resultArea.offsetTop - 20;
             window.scrollTo({ top: offset, behavior: 'smooth' });
@@ -259,30 +314,20 @@
     function drawWisdom() {
         const randomIndex = Math.floor(Math.random() * wisdomQuotes.length);
         document.getElementById('wisdom-display').innerHTML = wisdomQuotes[randomIndex];
-        
         const fill = document.getElementById('battery-fill');
         document.getElementById('battery-text').innerText = currentScore + '%';
-        
-        // 電池顏色邏輯
         if(currentScore < 35) fill.style.background = 'var(--pogo-red)';
         else if(currentScore < 75) fill.style.background = 'var(--pogo-yellow)';
         else fill.style.background = 'var(--pogo-green)';
-
         const now = new Date();
         const year = now.getFullYear() - 1911;
         const month = now.getMonth() + 1;
         const day = now.getDate();
         document.getElementById('date-display').innerText = `${year}.${month}.${day}`;
-        
         document.getElementById('main-ritual').style.display = 'none';
         document.getElementById('wisdom-area').style.display = 'flex';
-
-        // 回到頂部查看語錄
         window.scrollTo({ top: 0, behavior: 'smooth' });
-
-        setTimeout(() => {
-            fill.style.width = currentScore + '%';
-        }, 100);
+        setTimeout(() => { fill.style.width = currentScore + '%'; }, 100);
     }
 </script>
 
