@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>練陣前身心儀式</title>
+    <title>練陣前我OK</title>
     <style>
         :root {
             --pogo-blue: #2EB9E6;
@@ -221,7 +221,7 @@
 <div class="pogo-container">
     <div id="main-ritual">
         <header>
-            <h2>練陣前身心儀式</h2>
+            <h2>練陣前我OK</h2>
             <div class="line"></div>
             <p>每一場震撼的鼓聲，始於內心的平靜</p>
         </header>
@@ -289,24 +289,15 @@
 </div>
 
 <script>
-    // 數位與實體同步反饋 (中心往外跳動)
     function triggerHeartInteraction(element) {
-        // 1. 實體震動模式 (心跳感)
         hapticHeartbeat();
-
-        // 2. 數位跳動動畫 (由中心往外)
         const icon = element.querySelector('.heart-icon');
         icon.classList.remove('pulsing');
-        void icon.offsetWidth; // 強制重繪
+        void icon.offsetWidth; 
         icon.classList.add('pulsing');
-        
-        // 動畫結束後移除 class 以便下次觸發
-        setTimeout(() => {
-            icon.classList.remove('pulsing');
-        }, 300);
+        setTimeout(() => { icon.classList.remove('pulsing'); }, 300);
     }
 
-    // 模擬心跳跳動感 (實體震動 API)
     function hapticHeartbeat() {
         if (window.navigator && window.navigator.vibrate) {
             window.navigator.vibrate([40, 60, 40]);
