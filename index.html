@@ -86,9 +86,8 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
-        /* --- 調整後的文字設計：藍色系列、呼吸閃爍動態 --- */
         .loading-text-eng {
-            color: #1A5276; /* 使用更深的藍色提高清晰度 */
+            color: #1A5276;
             margin-top: 18px;
             font-size: 1.15rem;
             font-weight: 500;
@@ -99,7 +98,6 @@
             align-items: baseline;
             position: relative;
             left: 0.75em;
-            /* 藍色呼吸燈動畫：跟著電池能量感閃爍 */
             animation: pogo-blue-glow 1.5s ease-in-out infinite;
         }
 
@@ -109,7 +107,7 @@
                 text-shadow: 0 0 0px rgba(46, 185, 230, 0);
             }
             50% { 
-                color: #FFFFFF; /* 閃爍時變亮 */
+                color: #FFFFFF;
                 text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(46, 185, 230, 0.6);
             }
         }
@@ -135,7 +133,7 @@
 
         .fade-out { opacity: 0; visibility: hidden; }
 
-        /* --- 主容器其餘風格保持不變 --- */
+        /* --- 主容器 --- */
         .pogo-container {
             background: var(--pogo-white); border-radius: 40px; padding: 40px 25px;
             max-width: 500px; width: 100%; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
@@ -167,15 +165,28 @@
         .heart-rating { display: flex; flex-direction: row-reverse; justify-content: center; gap: 12px; }
         .heart-rating input { display: none; }
         .heart-rating label { cursor: pointer; transition: transform 0.2s; -webkit-tap-highlight-color: transparent; }
-        .heart-icon { width: 45px; height: 45px; fill: #E0E0E0; stroke: #E0E0E0; stroke-width: 1.5; }
+        .heart-icon { width: 45px; height: 45px; fill: #E0E0E0; stroke: #E0E0E0; stroke-width: 1.5; transition: fill 0.2s; }
         .heart-rating input:checked ~ label .heart-icon { fill: var(--pogo-red); stroke: var(--pogo-red); }
+
+        /* --- 中心往外跳動動畫 (Pulse) --- */
+        .pulsing {
+            animation: heart-pulse 0.3s ease-out both;
+        }
+
+        @keyframes heart-pulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 0px var(--pogo-red)); }
+            30% { transform: scale(1.3); filter: drop-shadow(0 0 8px var(--pogo-red)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 0px var(--pogo-red)); }
+        }
 
         .btn { 
             background-color: var(--pogo-red); color: white; border: none; 
             padding: 18px; width: 100%; border-radius: 100px; 
             font-size: 1.25rem; font-weight: 800; cursor: pointer; 
             box-shadow: 0 6px 0px var(--pogo-red-dark); letter-spacing: 0.2em; 
+            transition: transform 0.1s;
         }
+        .btn:active { transform: translateY(4px); box-shadow: 0 2px 0px var(--pogo-red-dark); }
 
         #result-area { margin-top: 30px; padding: 30px 15px; border-radius: 30px; background: white; display: none; }
         .score-display { font-size: 3.5rem; font-weight: 900; color: var(--pogo-red); display: block; margin-bottom: 10px; }
@@ -217,7 +228,7 @@
 
         <div class="section">
             <label class="check-item"><input type="checkbox" class="task"> 已整理好情緒，今日全神貫注</label>
-            <label class="check-item"><input type="checkbox" class="task"> 守護團隊氣氛，互相鼓勵指證</label>
+            <label class="check-item"><input type="checkbox" class="task"> 守護團隊氣氛，互相鼓勵指正</label>
             <label class="check-item"><input type="checkbox" class="task"> 歡喜自願接受任何變化與調整</label>
             <label class="check-item"><input type="checkbox" class="task"> 對自己有信心、耐心、恆心</label>
             <label class="check-item"><input type="checkbox" class="task"> 誠實面對自己，修性修心</label>
@@ -226,25 +237,25 @@
         <div class="heart-box">
             <span style="font-size: 1.15rem; font-weight: 900; color: var(--pogo-blue); display: block; margin-bottom: 12px;">灌滿＿顆心能量<br>迎接今日練陣</span>
             <div class="heart-rating">
-                <input type="radio" id="h5" name="rating" value="5"><label for="h5">
+                <input type="radio" id="h5" name="rating" value="5"><label for="h5" onclick="triggerHeartInteraction(this)">
                     <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </label>
-                <input type="radio" id="h4" name="rating" value="4"><label for="h4">
+                <input type="radio" id="h4" name="rating" value="4"><label for="h4" onclick="triggerHeartInteraction(this)">
                     <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </label>
-                <input type="radio" id="h3" name="rating" value="3"><label for="h3">
+                <input type="radio" id="h3" name="rating" value="3"><label for="h3" onclick="triggerHeartInteraction(this)">
                     <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </label>
-                <input type="radio" id="h2" name="rating" value="2"><label for="h2">
+                <input type="radio" id="h2" name="rating" value="2"><label for="h2" onclick="triggerHeartInteraction(this)">
                     <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </label>
-                <input type="radio" id="h1" name="rating" value="1"><label for="h1">
+                <input type="radio" id="h1" name="rating" value="1"><label for="h1" onclick="triggerHeartInteraction(this)">
                     <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 </label>
             </div>
         </div>
 
-        <button class="btn" onclick="showAnalysis()">擊鼓開始</button>
+        <button class="btn" onclick="showAnalysis(); hapticHeartbeat();">擊鼓開始</button>
 
         <div id="result-area">
             <span style="font-size: 0.85rem; color: #7F8C8D; display: block; margin-bottom: 5px;">今日身心備戰狀態</span>
@@ -253,7 +264,7 @@
                 <span id="fb-title" style="font-size: 1.4rem; font-weight: 800; display: block; margin-bottom: 10px;"></span>
                 <span id="fb-desc" style="font-size: 1rem; color: #5D6D7E; line-height: 1.6; display: block;"></span>
             </div>
-            <button class="btn" style="margin-top: 25px; background: linear-gradient(90deg, #42F5E6, #2EB9E6); box-shadow: 0 6px 0px #2598bd;" onclick="drawWisdom()">領取今日語錄</button>
+            <button class="btn" style="margin-top: 25px; background: linear-gradient(90deg, #42F5E6, #2EB9E6); box-shadow: 0 6px 0px #2598bd;" onclick="drawWisdom(); hapticHeartbeat();">領取今日語錄</button>
         </div>
     </div>
 
@@ -278,6 +289,30 @@
 </div>
 
 <script>
+    // 數位與實體同步反饋 (中心往外跳動)
+    function triggerHeartInteraction(element) {
+        // 1. 實體震動模式 (心跳感)
+        hapticHeartbeat();
+
+        // 2. 數位跳動動畫 (由中心往外)
+        const icon = element.querySelector('.heart-icon');
+        icon.classList.remove('pulsing');
+        void icon.offsetWidth; // 強制重繪
+        icon.classList.add('pulsing');
+        
+        // 動畫結束後移除 class 以便下次觸發
+        setTimeout(() => {
+            icon.classList.remove('pulsing');
+        }, 300);
+    }
+
+    // 模擬心跳跳動感 (實體震動 API)
+    function hapticHeartbeat() {
+        if (window.navigator && window.navigator.vibrate) {
+            window.navigator.vibrate([40, 60, 40]);
+        }
+    }
+
     window.addEventListener('load', () => {
         const countEl = document.getElementById('loading-count');
         let count = 0;
@@ -353,4 +388,3 @@
 
 </body>
 </html>
-
